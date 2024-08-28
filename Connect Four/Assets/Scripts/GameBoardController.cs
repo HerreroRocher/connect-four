@@ -194,7 +194,7 @@ public class NewBehaviourScript : MonoBehaviour
         }
 
         // Debug.Log("Logging grid for player " + playerNo);
-        Log2DArray(playerGrid);
+        // Log2DArray(playerGrid);
 
         // only gonna check up direction, right, and diagonal
         // gonna have to use recursive function to count the number of in-a-rows in a certain direction
@@ -282,13 +282,14 @@ public class NewBehaviourScript : MonoBehaviour
 
                     int[,] cells = new int[inARowReq, 2];
 
-                    for (cellNo = 0; cellNo < inARowReq; cellNo++)
+                    for (int cellNo = 0; cellNo < inARowReq; cellNo++)
                     {
                         cells[cellNo, 0] = col;
-                        cells[cellNo, 1] = row - cellNo;
+                        cells[cellNo, 1] = row + cellNo;
                     }
 
                     Log2DArray(cells);
+                    colourWinningPieces(cells, inARowReq);
 
                     return true;
                 }
@@ -317,7 +318,10 @@ public class NewBehaviourScript : MonoBehaviour
 
 
     public void Log2DArray(int[,] array)
+
     {
+        int rows = array.GetLength(0);
+        int cols = array.GetLength(1);
         string logMessage = "2D Array:\n";
 
         for (int col = cols - 1; col > -1; col--)
@@ -330,11 +334,24 @@ public class NewBehaviourScript : MonoBehaviour
                                 // Debug.Log("Row iterated");
         }
 
-        // Debug.Log(logMessage);
+        Debug.Log(logMessage);
     }
 
-    public void colourWinningPieces(int[,] cells)
+    public void colourWinningPieces(int[,] cells, int inARowReq)
     {
+
+        for (int i = 0; i < inARowReq; i++)
+        {
+            int colNo = cells[i, 0];
+            int rowNo = cells[i, 1];
+            Debug.Log("Need to colour cell in column " + (colNo + 1) + " row " + (rowNo + 1));
+
+            CellController currentCellChecking = grid[colNo, rowNo];
+
+            currentCellChecking.setWon();
+
+
+        }
 
     }
 

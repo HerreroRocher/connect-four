@@ -11,6 +11,7 @@ public class CellController : MonoBehaviour, IPointerDownHandler
 
     private bool occupied;
     private Image cellImage;
+    public Sprite wonSprite;
     public Sprite redSprite;
     public Sprite yellowSprite;
     public Sprite unoccupiedSprite;
@@ -88,6 +89,13 @@ public class CellController : MonoBehaviour, IPointerDownHandler
 
         return belongsTo;
     }
+
+    public void setWon()
+    {
+        cellImage.sprite = wonSprite; // Directly test with one sprite
+
+    }
+
 
 
 
