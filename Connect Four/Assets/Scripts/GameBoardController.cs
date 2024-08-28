@@ -56,9 +56,29 @@ public class NewBehaviourScript : MonoBehaviour
 
     }
 
+    public void checkCellClicks()
+    {
+
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                CellController currentCellChecking = grid[col, row];
+                if (currentCellChecking.getUnattendedCheck() == true)
+                {
+                    int columnClicked = currentCellChecking.getColumn();
+                    currentCellChecking.setCheckAttended();
+                    Debug.Log("Cell clicked at column " + (columnClicked + 1) + " and attended to");
+                }
+
+            }
+        }
+
+    }
+
     // Update is called once per frame
     void Update()
     {
-
+        checkCellClicks();
     }
 }
