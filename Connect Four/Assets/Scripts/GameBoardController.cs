@@ -16,7 +16,9 @@ public class NewBehaviourScript : MonoBehaviour
 
     private CellController[,] grid;
 
-    private string nextColourTurn;
+    private int nextPlayerTurn;
+
+    private string[] playerColours;
 
 
 
@@ -26,7 +28,10 @@ public class NewBehaviourScript : MonoBehaviour
         cols = 6;
         rows = 7;
 
-        nextColourTurn = "red";
+        nextPlayerTurn = 0;
+
+        playerColours = new string[] { "red", "yellow" };
+
 
         gridLayoutGroup = GetComponent<GridLayoutGroup>();
         if (gridLayoutGroup != null)
@@ -90,7 +95,7 @@ public class NewBehaviourScript : MonoBehaviour
             if (currentCellChecking.getUnoccupied() == true)
             {
                 Debug.Log("Found unoccupied cell at column " + (column + 1) + " row " + (row + 1));
-                currentCellChecking.setOccupied(nextColourTurn);
+                currentCellChecking.setOccupied(playerColours[nextPlayerTurn]);
                 switchTurns();
 
                 break;
@@ -102,17 +107,7 @@ public class NewBehaviourScript : MonoBehaviour
 
     public void switchTurns()
     {
-        if (nextColourTurn == "red")
-        {
-            nextColourTurn = "yellow";
-        }
-        else
-        {
-            if (nextColourTurn == "yellow")
-            {
-                nextColourTurn = "red";
-            }
-        }
+        nextPlayerTurn = 1 - nextPlayerTurn;
     }
 
     // Update is called once per frame
