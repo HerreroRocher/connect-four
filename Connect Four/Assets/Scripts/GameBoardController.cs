@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; // Include the UI namespace to access GridLayoutGroup
+using UnityEngine.UI;
+using TMPro;
 
 public class NewBehaviourScript : MonoBehaviour
 {
+
+    public TextMeshProUGUI NextPlayer; // Use TextMeshProUGUI for UI text components
 
     public int cols;
     public int rows;
@@ -20,6 +23,8 @@ public class NewBehaviourScript : MonoBehaviour
 
     private string[] playerColours;
 
+    private string[] playerNames;
+
 
 
     // Start is called before the first frame update
@@ -31,6 +36,10 @@ public class NewBehaviourScript : MonoBehaviour
         nextPlayerTurn = 0;
 
         playerColours = new string[] { "red", "yellow" };
+
+        playerNames = new string[] { "Daniel", "Natasja" };
+        setNextPlayerText();
+
 
 
         gridLayoutGroup = GetComponent<GridLayoutGroup>();
@@ -78,7 +87,7 @@ public class NewBehaviourScript : MonoBehaviour
                     int columnClicked = currentCellChecking.getColumn();
                     currentCellChecking.setCheckAttended();
                     setLowestCellInCol(columnClicked);
-                    Debug.Log("Cell clicked at column " + (columnClicked + 1) + " and attended to");
+                    // Debug.Log("Cell clicked at column " + (columnClicked + 1) + " and attended to");
                 }
 
             }
@@ -94,9 +103,11 @@ public class NewBehaviourScript : MonoBehaviour
             CellController currentCellChecking = grid[column, row];
             if (currentCellChecking.getUnoccupied() == true)
             {
-                Debug.Log("Found unoccupied cell at column " + (column + 1) + " row " + (row + 1));
+                // Debug.Log("Found unoccupied cell at column " + (column + 1) + " row " + (row + 1));
                 currentCellChecking.setOccupied(playerColours[nextPlayerTurn]);
                 switchTurns();
+                setNextPlayerText();
+
 
                 break;
             }
@@ -114,5 +125,14 @@ public class NewBehaviourScript : MonoBehaviour
     void Update()
     {
         checkCellClicks();
+    }
+
+    public void setNextPlayerText()
+    {
+        // Debug.Log("text switch method called");
+        // Debug.Log("player no " + nextPlayerTurn);
+        // Debug.Log("player name " + playerNames[nextPlayerTurn]);
+        NextPlayer.text = "It's your turn,\n" + playerNames[nextPlayerTurn];
+
     }
 }

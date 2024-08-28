@@ -30,7 +30,7 @@ public class CellController : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData pointer)
     {
         // Debug.Log("Cell clicked");
-        Debug.Log("Clicked on cell in column " + (column + 1) + " row " + (row + 1));
+        // Debug.Log("Clicked on cell in column " + (column + 1) + " row " + (row + 1));
         unattendedCheck = true;
     }
 
@@ -64,7 +64,7 @@ public class CellController : MonoBehaviour, IPointerDownHandler
 
     public void setOccupied(string colour)
     {
-        Debug.Log("Set Occupied at column " + (column + 1) + " row " + (row + 1));
+        // Debug.Log("Set Occupied at column " + (column + 1) + " row " + (row + 1));
         occupied = true;
         if (colour == "red")
         {
