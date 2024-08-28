@@ -25,6 +25,9 @@ public class NewBehaviourScript : MonoBehaviour
 
     private string[] playerNames;
 
+    private bool gameOver;
+
+    public int inARowReq;
 
 
     // Start is called before the first frame update
@@ -32,8 +35,11 @@ public class NewBehaviourScript : MonoBehaviour
     {
         cols = 5;
         rows = 5;
+        inARowReq = 4;
 
         nextPlayerTurn = 0;
+
+        gameOver = false;
 
         playerColours = new string[] { "red", "yellow" };
 
@@ -106,10 +112,13 @@ public class NewBehaviourScript : MonoBehaviour
             {
                 // Debug.Log("Found unoccupied cell at column " + (column + 1) + " row " + (row + 1));
                 currentCellChecking.setOccupied(playerColours[nextPlayerTurn], nextPlayerTurn);
-                if (!GameWonCheck(nextPlayerTurn))
+                if (!gameOver)
                 {
-                    switchTurns();
-                    setSideText();
+                    if (!GameWonCheck(nextPlayerTurn))
+                    {
+                        switchTurns();
+                        setSideText();
+                    }
                 }
 
 
@@ -145,7 +154,7 @@ public class NewBehaviourScript : MonoBehaviour
 
         if (checkWinner(playerNo))
         {
-            Debug.Log("WINNER");
+            // Debug.Log("WINNER");
             NextPlayer.text = playerNames[playerNo] + " wins!";
             return true;
         }
@@ -184,7 +193,7 @@ public class NewBehaviourScript : MonoBehaviour
             }
         }
 
-        Debug.Log("Logging grid for player " + playerNo);
+        // Debug.Log("Logging grid for player " + playerNo);
         Log2DArray(playerGrid);
 
         // only gonna check up direction, right, and diagonal
@@ -195,7 +204,11 @@ public class NewBehaviourScript : MonoBehaviour
             int count = 1;
             if (playerGrid[col, row] == 1)
             {
-                count += upwardsWin(col, row + 1);
+                if (row + 1 < rows)
+                {
+                    count += upwardsWin(col, row + 1);
+                }
+
                 return count;
             }
 
@@ -204,15 +217,53 @@ public class NewBehaviourScript : MonoBehaviour
 
         }
 
-        bool rightwardsWin(int row, int col)
+        int rightwardsWin(int col, int row)
         {
-            return false;
+            int count = 1;
+            if (playerGrid[col, row] == 1)
+            {
+                if (col + 1 < cols)
+                {
+                    count += rightwardsWin(col + 1, row);
+                }
+
+                return count;
+            }
+
+            return 0;
 
         }
 
-        bool diagonalWin(int row, int col)
+        int diagonalRightUpWin(int col, int row)
         {
-            return false;
+            int count = 1;
+            if (playerGrid[col, row] == 1)
+            {
+                if (col + 1 < cols && row + 1 < rows)
+                {
+                    count += diagonalRightUpWin(col + 1, row + 1);
+
+                }
+                return count;
+            }
+
+            return 0;
+
+        }
+
+        int diagonalRightDownWin(int col, int row)
+        {
+            int count = 1;
+            if (playerGrid[col, row] == 1)
+            {
+                if (col + 1 < cols && row - 1 >= 0)
+                {
+                    count += diagonalRightDownWin(col + 1, row - 1);
+                }
+                return count;
+            }
+
+            return 0;
 
         }
 
@@ -221,8 +272,35 @@ public class NewBehaviourScript : MonoBehaviour
         {
             for (int row = 0; row < rows; row++)
             {
-                Debug.Log("Number of pieces in a row upwards at column " + (col + 1) + " row " + (row + 1) + " = " + upwardsWin(col, row));
-                if (upwardsWin(col, row) == 4)
+                // Debug.Log("Number of pieces in a row upwards at column " + (col + 1) + " row " + (row + 1) + " = " + upwardsWin(col, row));
+                // Debug.Log("Number of pieces in a row rightwards at column " + (col + 1) + " row " + (row + 1) + " = " + rightwardsWin(col, row));
+                // Debug.Log("Number of pieces in a row diagonalRightUp at column " + (col + 1) + " row " + (row + 1) + " = " + diagonalRightUpWin(col, row));
+                // Debug.Log("Number of pieces in a row diagonalRightDown at column " + (col + 1) + " row " + (row + 1) + " = " + diagonalRightDownWin(col, row));
+
+                if (upwardsWin(col, row) == inARowReq)
+                {
+
+                    int[,] cells = new int[inARowReq, 2];
+
+                    for (cellNo = 0; cellNo < inARowReq; cellNo++)
+                    {
+                        cells[cellNo, 0] = col;
+                        cells[cellNo, 1] = row - cellNo;
+                    }
+
+                    Log2DArray(cells);
+
+                    return true;
+                }
+                else if (diagonalRightDownWin(col, row) == inARowReq)
+                {
+                    return true;
+                }
+                else if (diagonalRightUpWin(col, row) == inARowReq)
+                {
+                    return true;
+                }
+                else if (rightwardsWin(col, row) == inARowReq)
                 {
                     return true;
                 }
@@ -252,7 +330,12 @@ public class NewBehaviourScript : MonoBehaviour
                                 // Debug.Log("Row iterated");
         }
 
-        Debug.Log(logMessage);
+        // Debug.Log(logMessage);
+    }
+
+    public void colourWinningPieces(int[,] cells)
+    {
+
     }
 
 
