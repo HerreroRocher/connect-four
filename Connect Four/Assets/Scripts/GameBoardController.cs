@@ -43,7 +43,7 @@ public class NewBehaviourScript : MonoBehaviour
 
         playerColours = new string[] { "red", "yellow" };
 
-        playerNames = new string[] { "Daniel", "Natasja" };
+        playerNames = GameData.players;
 
         setSideText();
 
