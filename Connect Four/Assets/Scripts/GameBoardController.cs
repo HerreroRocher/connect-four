@@ -30,15 +30,16 @@ public class NewBehaviourScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cols = 6;
-        rows = 7;
+        cols = 5;
+        rows = 5;
 
         nextPlayerTurn = 0;
 
         playerColours = new string[] { "red", "yellow" };
 
         playerNames = new string[] { "Daniel", "Natasja" };
-        setNextPlayerText();
+
+        setSideText();
 
 
 
@@ -104,9 +105,12 @@ public class NewBehaviourScript : MonoBehaviour
             if (currentCellChecking.getUnoccupied() == true)
             {
                 // Debug.Log("Found unoccupied cell at column " + (column + 1) + " row " + (row + 1));
-                currentCellChecking.setOccupied(playerColours[nextPlayerTurn]);
-                switchTurns();
-                setNextPlayerText();
+                currentCellChecking.setOccupied(playerColours[nextPlayerTurn], nextPlayerTurn);
+                if (!GameWonCheck(nextPlayerTurn))
+                {
+                    switchTurns();
+                    setSideText();
+                }
 
 
                 break;
@@ -127,7 +131,7 @@ public class NewBehaviourScript : MonoBehaviour
         checkCellClicks();
     }
 
-    public void setNextPlayerText()
+    public void setSideText()
     {
         // Debug.Log("text switch method called");
         // Debug.Log("player no " + nextPlayerTurn);
@@ -135,4 +139,121 @@ public class NewBehaviourScript : MonoBehaviour
         NextPlayer.text = "It's your turn,\n" + playerNames[nextPlayerTurn];
 
     }
+
+    public bool GameWonCheck(int playerNo)
+    {
+
+        if (checkWinner(playerNo))
+        {
+            Debug.Log("WINNER");
+            NextPlayer.text = playerNames[playerNo] + " wins!";
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public bool checkWinner(int playerNo)
+    {
+
+
+        // creating a representation of this players pieces in the board
+        int[,] playerGrid = new int[cols, rows];
+
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                CellController currentCellChecking = grid[col, row];
+
+
+                if (currentCellChecking.getBelongsTo() == playerNo)
+                {
+                    playerGrid[col, row] = 1;
+
+                }
+                else
+                {
+                    playerGrid[col, row] = 0;
+                }
+
+
+
+
+            }
+        }
+
+        Debug.Log("Logging grid for player " + playerNo);
+        Log2DArray(playerGrid);
+
+        // only gonna check up direction, right, and diagonal
+        // gonna have to use recursive function to count the number of in-a-rows in a certain direction
+
+        int upwardsWin(int col, int row)
+        {
+            int count = 1;
+            if (playerGrid[col, row] == 1)
+            {
+                count += upwardsWin(col, row + 1);
+                return count;
+            }
+
+            return 0;
+
+
+        }
+
+        bool rightwardsWin(int row, int col)
+        {
+            return false;
+
+        }
+
+        bool diagonalWin(int row, int col)
+        {
+            return false;
+
+        }
+
+        for (int col = 0; col < cols; col++)
+
+        {
+            for (int row = 0; row < rows; row++)
+            {
+                Debug.Log("Number of pieces in a row upwards at column " + (col + 1) + " row " + (row + 1) + " = " + upwardsWin(col, row));
+                if (upwardsWin(col, row) == 4)
+                {
+                    return true;
+                }
+
+            }
+        }
+
+
+
+
+        return false;
+    }
+
+
+
+    public void Log2DArray(int[,] array)
+    {
+        string logMessage = "2D Array:\n";
+
+        for (int col = cols - 1; col > -1; col--)
+        {
+            for (int row = 0; row < rows; row++)
+            {
+                logMessage += array[row, col] + "\t"; // Use tab for spacing
+            }
+            logMessage += "\n"; // New line for the next row
+                                // Debug.Log("Row iterated");
+        }
+
+        Debug.Log(logMessage);
+    }
+
+
 }

@@ -19,10 +19,13 @@ public class CellController : MonoBehaviour, IPointerDownHandler
 
     private bool unattendedCheck;
 
+    private int belongsTo;
+
     public void Start()
     {
         // Debug.Log("Cell created");
         occupied = false;
+        belongsTo = -1;
         cellImage = GetComponent<Image>();
         unattendedCheck = false;
     }
@@ -62,10 +65,11 @@ public class CellController : MonoBehaviour, IPointerDownHandler
         return !occupied;
     }
 
-    public void setOccupied(string colour)
+    public void setOccupied(string colour, int belongsTo)
     {
         // Debug.Log("Set Occupied at column " + (column + 1) + " row " + (row + 1));
         occupied = true;
+        this.belongsTo = belongsTo;
         if (colour == "red")
         {
 
@@ -77,6 +81,12 @@ public class CellController : MonoBehaviour, IPointerDownHandler
             cellImage.sprite = yellowSprite; // Directly test with one sprite
 
         }
+    }
+
+    public int getBelongsTo()
+    {
+
+        return belongsTo;
     }
 
 
