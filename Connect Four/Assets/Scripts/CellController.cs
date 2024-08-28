@@ -21,7 +21,7 @@ public class CellController : MonoBehaviour, IPointerDownHandler
 
     public void Start()
     {
-        Debug.Log("Cell created");
+        // Debug.Log("Cell created");
         selection_status = "unoccupied";
         cellImage = GetComponent<Image>();
         unattendedCheck = false;
@@ -29,14 +29,8 @@ public class CellController : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData pointer)
     {
-        Debug.Log("Cell clicked");
+        // Debug.Log("Cell clicked");
         Debug.Log("Clicked on cell in column " + (column + 1) + " row " + (row + 1));
-        //Shade bottom most unoccupied cell in column column
-        if (selection_status == "unoccupied")
-        {
-            cellImage.sprite = redSprite; // Directly test with one sprite
-            selection_status = "red";
-        }
         unattendedCheck = true;
     }
 
@@ -62,5 +56,19 @@ public class CellController : MonoBehaviour, IPointerDownHandler
     {
         unattendedCheck = false;
     }
+
+    public bool getUnoccupied()
+    {
+        return selection_status == "unoccupied";
+    }
+
+    public void setOccupied()
+    {
+        Debug.Log("Set Occupied at column " + (column + 1) + " row " + (row + 1));
+        cellImage.sprite = redSprite; // Directly test with one sprite
+        selection_status = "red";
+    }
+
+
 
 }

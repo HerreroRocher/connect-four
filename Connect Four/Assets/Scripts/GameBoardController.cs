@@ -41,7 +41,7 @@ public class NewBehaviourScript : MonoBehaviour
         grid = new CellController[cols, rows];
 
 
-        Debug.Log("Start method called");
+        // Debug.Log("Start method called");
 
         for (int row = 0; row < rows; row++)
         {
@@ -68,10 +68,28 @@ public class NewBehaviourScript : MonoBehaviour
                 {
                     int columnClicked = currentCellChecking.getColumn();
                     currentCellChecking.setCheckAttended();
+                    setLowestCellInCol(columnClicked);
                     Debug.Log("Cell clicked at column " + (columnClicked + 1) + " and attended to");
                 }
 
             }
+        }
+
+    }
+
+    public void setLowestCellInCol(int column)
+    {
+
+        for (int row = 0; row < rows; row++)
+        {
+            CellController currentCellChecking = grid[column, row];
+            if (currentCellChecking.getUnoccupied() == true)
+            {
+                Debug.Log("Found unoccupied cell at column " + (column + 1) + " row " + (row + 1));
+                currentCellChecking.setOccupied();
+                break;
+            }
+
         }
 
     }

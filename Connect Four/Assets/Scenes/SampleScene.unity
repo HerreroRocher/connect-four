@@ -464,7 +464,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_StartCorner: 0
+  m_StartCorner: 2
   m_StartAxis: 0
   m_CellSize: {x: 200, y: 200}
   m_Spacing: {x: 0, y: 0}
@@ -482,7 +482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d001b44dc3435804e912493fd65e5eae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  columns: 7
+  cols: 0
   rows: 6
   cellPrefab: {fileID: 4821124009919220470, guid: f9ec48d12092b4c4eb843813ea9889a3, type: 3}
 --- !u!1 &742583419
