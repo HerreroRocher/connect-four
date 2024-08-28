@@ -105,24 +105,25 @@ public class NewBehaviourScript : MonoBehaviour
     public void setLowestCellInCol(int column)
     {
 
-        for (int row = 0; row < rows; row++)
+        if (!gameOver)
         {
-            CellController currentCellChecking = grid[column, row];
-            if (currentCellChecking.getUnoccupied() == true)
+            for (int row = 0; row < rows; row++)
             {
-                // Debug.Log("Found unoccupied cell at column " + (column + 1) + " row " + (row + 1));
-                currentCellChecking.setOccupied(playerColours[nextPlayerTurn], nextPlayerTurn);
-                if (!gameOver)
+                CellController currentCellChecking = grid[column, row];
+                if (currentCellChecking.getUnoccupied() == true)
                 {
+                    // Debug.Log("Found unoccupied cell at column " + (column + 1) + " row " + (row + 1));
+                    currentCellChecking.setOccupied(playerColours[nextPlayerTurn], nextPlayerTurn);
+
                     if (!GameWonCheck(nextPlayerTurn))
                     {
                         switchTurns();
                         setSideText();
                     }
+
+
+                    break;
                 }
-
-
-                break;
             }
 
         }
@@ -155,6 +156,7 @@ public class NewBehaviourScript : MonoBehaviour
         if (checkWinner(playerNo))
         {
             // Debug.Log("WINNER");
+            gameOver = true;
             NextPlayer.text = playerNames[playerNo] + " wins!";
             return true;
         }
@@ -288,21 +290,51 @@ public class NewBehaviourScript : MonoBehaviour
                         cells[cellNo, 1] = row + cellNo;
                     }
 
-                    Log2DArray(cells);
+                    // Log2DArray(cells);
                     colourWinningPieces(cells, inARowReq);
 
                     return true;
                 }
                 else if (diagonalRightDownWin(col, row) == inARowReq)
                 {
+                    int[,] cells = new int[inARowReq, 2];
+
+                    for (int cellNo = 0; cellNo < inARowReq; cellNo++)
+                    {
+                        cells[cellNo, 0] = col + cellNo;
+                        cells[cellNo, 1] = row - cellNo;
+                    }
+
+                    // Log2DArray(cells);
+                    colourWinningPieces(cells, inARowReq);
                     return true;
                 }
                 else if (diagonalRightUpWin(col, row) == inARowReq)
                 {
+                    int[,] cells = new int[inARowReq, 2];
+
+                    for (int cellNo = 0; cellNo < inARowReq; cellNo++)
+                    {
+                        cells[cellNo, 0] = col + cellNo;
+                        cells[cellNo, 1] = row + cellNo;
+                    }
+
+                    // Log2DArray(cells);
+                    colourWinningPieces(cells, inARowReq);
                     return true;
                 }
                 else if (rightwardsWin(col, row) == inARowReq)
                 {
+                    int[,] cells = new int[inARowReq, 2];
+
+                    for (int cellNo = 0; cellNo < inARowReq; cellNo++)
+                    {
+                        cells[cellNo, 0] = col + cellNo;
+                        cells[cellNo, 1] = row;
+                    }
+
+                    // Log2DArray(cells);
+                    colourWinningPieces(cells, inARowReq);
                     return true;
                 }
 
@@ -344,7 +376,7 @@ public class NewBehaviourScript : MonoBehaviour
         {
             int colNo = cells[i, 0];
             int rowNo = cells[i, 1];
-            Debug.Log("Need to colour cell in column " + (colNo + 1) + " row " + (rowNo + 1));
+            // Debug.Log("Need to colour cell in column " + (colNo + 1) + " row " + (rowNo + 1));
 
             CellController currentCellChecking = grid[colNo, rowNo];
 
