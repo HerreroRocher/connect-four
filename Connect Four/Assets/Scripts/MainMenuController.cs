@@ -19,22 +19,13 @@ public class MainMenuController : MonoBehaviour
 
 
     // This method is called when the button is clicked
-
-    public void Start()
-    {
-
-        players = new string[] { "Daniel", "Natasja" }; ;
-        colours = new string[] { "red", "yellow" };
-        rows = 6;
-        columns = 6;
-        inARowRequirements = 4;
-    }
     public void OnPlayButtonClicked()
     {
-        players = new string[] { player1NameIF.text, player2NameIF.text }; 
-        rows = int.Parse(rowsReq.text);
-        columns = int.Parse(columnsReq.text);
-        inARowRequirements = int.Parse(connectReq.text);
+        players = new string[] { (player1NameIF.text != "" ? player1NameIF.text : "Daniel"), (player2NameIF.text != "" ? player2NameIF.text : "Natasja") }; 
+        rows = (int.TryParse(rowsReq.text, out rows) ? rows: 7 );
+        columns = (int.TryParse(columnsReq.text, out columns) ? columns : 7 );
+        inARowRequirements = (int.TryParse(connectReq.text, out inARowRequirements) ? inARowRequirements : 4 );
+        colours = new string[] { "red", "yellow" };
 
         // Load the gameboard scene
         setGameData();
