@@ -9,7 +9,7 @@ public class CellController : MonoBehaviour, IPointerDownHandler
 {
     // Start is called before the first frame update
 
-    private string selection_status;
+    private bool occupied;
     private Image cellImage;
     public Sprite redSprite;
     public Sprite yellowSprite;
@@ -22,7 +22,7 @@ public class CellController : MonoBehaviour, IPointerDownHandler
     public void Start()
     {
         // Debug.Log("Cell created");
-        selection_status = "unoccupied";
+        occupied = false;
         cellImage = GetComponent<Image>();
         unattendedCheck = false;
     }
@@ -59,14 +59,24 @@ public class CellController : MonoBehaviour, IPointerDownHandler
 
     public bool getUnoccupied()
     {
-        return selection_status == "unoccupied";
+        return !occupied;
     }
 
-    public void setOccupied()
+    public void setOccupied(string colour)
     {
         Debug.Log("Set Occupied at column " + (column + 1) + " row " + (row + 1));
-        cellImage.sprite = redSprite; // Directly test with one sprite
-        selection_status = "red";
+        occupied = true;
+        if (colour == "red")
+        {
+
+            cellImage.sprite = redSprite; // Directly test with one sprite
+        }
+
+        if (colour == "yellow")
+        {
+            cellImage.sprite = yellowSprite; // Directly test with one sprite
+
+        }
     }
 
 

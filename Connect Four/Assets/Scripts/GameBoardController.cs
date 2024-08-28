@@ -16,6 +16,8 @@ public class NewBehaviourScript : MonoBehaviour
 
     private CellController[,] grid;
 
+    private string nextColourTurn;
+
 
 
     // Start is called before the first frame update
@@ -23,6 +25,8 @@ public class NewBehaviourScript : MonoBehaviour
     {
         cols = 6;
         rows = 7;
+
+        nextColourTurn = "red";
 
         gridLayoutGroup = GetComponent<GridLayoutGroup>();
         if (gridLayoutGroup != null)
@@ -86,12 +90,29 @@ public class NewBehaviourScript : MonoBehaviour
             if (currentCellChecking.getUnoccupied() == true)
             {
                 Debug.Log("Found unoccupied cell at column " + (column + 1) + " row " + (row + 1));
-                currentCellChecking.setOccupied();
+                currentCellChecking.setOccupied(nextColourTurn);
+                switchTurns();
+
                 break;
             }
 
         }
 
+    }
+
+    public void switchTurns()
+    {
+        if (nextColourTurn == "red")
+        {
+            nextColourTurn = "yellow";
+        }
+        else
+        {
+            if (nextColourTurn == "yellow")
+            {
+                nextColourTurn = "red";
+            }
+        }
     }
 
     // Update is called once per frame
