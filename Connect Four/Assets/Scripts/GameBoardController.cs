@@ -1,26 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; // Include the UI namespace to access GridLayoutGroup
 
 public class NewBehaviourScript : MonoBehaviour
 {
 
-    public int columns = 7;
-    public int rows = 6;
+    public int cols;
+    public int rows;
+    private GridLayoutGroup gridLayoutGroup;
+
     public GameObject cellPrefab; // Reference to the cell prefab
+
+    //want to reer to cell in column 3 row 4 as grid[3][4], so put array of columns, and then the row order 
+
+    private CellController[,] grid;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
+        cols = 6;
+        rows = 7;
+
+        gridLayoutGroup = GetComponent<GridLayoutGroup>();
+        if (gridLayoutGroup != null)
+        {
+            // Set the constraint type to FixedColumnCount (or FixedRowCount as needed)
+            gridLayoutGroup.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+
+            // Set the number of columns
+            gridLayoutGroup.constraintCount = cols;
+        }
+        else
+        {
+            Debug.LogError("GridLayoutGroup component not found!");
+        }
+
+        grid = new CellController[cols, rows];
+
+
         Debug.Log("Start method called");
 
-        for (int x = 0; x < columns; x++)
+        for (int row = 0; row < rows; row++)
         {
-            for (int y = 0; y < rows; y++)
+            for (int col = 0; col < cols; col++)
             {
-                Instantiate(cellPrefab, new Vector3(x, y, 0), Quaternion.identity, transform);
+                GameObject cell = Instantiate(cellPrefab, new Vector3(col, row, 0), Quaternion.identity, transform);
+                grid[col, row] = cell.GetComponent<CellController>();
+                grid[col, row].setCoords(col, row);
             }
         }
 
