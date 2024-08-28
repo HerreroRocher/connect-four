@@ -33,15 +33,16 @@ public class NewBehaviourScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cols = 5;
-        rows = 5;
-        inARowReq = 4;
+        cols = GameData.columns;
+        rows = GameData.rows;
+        
+        inARowReq = GameData.inARowRequirements;
 
         nextPlayerTurn = 0;
 
         gameOver = false;
 
-        playerColours = new string[] { "red", "yellow" };
+        playerColours = GameData.colours;
 
         playerNames = GameData.players;
 
