@@ -70,7 +70,7 @@ public class CellController : MonoBehaviour, IPointerDownHandler
         occupied = true;
         this.belongsTo = belongsTo;
         this.color = color;
-        Debug.Log("Color meant to place for player " + belongsTo + ": " + color);
+        // Debug.Log("Color meant to place for player " + belongsTo + ": " + color);
         cellImage.color = color;
         
     }
