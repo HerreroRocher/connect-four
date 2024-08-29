@@ -11,16 +11,14 @@ public class CellController : MonoBehaviour, IPointerDownHandler
 
     private bool occupied;
     private Image cellImage;
-    public Sprite wonSprite;
-    public Sprite redSprite;
-    public Sprite yellowSprite;
-    public Sprite unoccupiedSprite;
     private int column;
     private int row;
 
     private bool unattendedCheck;
 
     private int belongsTo;
+
+    private Color color;
 
     public void Start()
     {
@@ -66,22 +64,15 @@ public class CellController : MonoBehaviour, IPointerDownHandler
         return !occupied;
     }
 
-    public void setOccupied(string colour, int belongsTo)
+    public void setOccupied(Color color, int belongsTo)
     {
         // Debug.Log("Set Occupied at column " + (column + 1) + " row " + (row + 1));
         occupied = true;
         this.belongsTo = belongsTo;
-        if (colour == "red")
-        {
-
-            cellImage.sprite = redSprite; // Directly test with one sprite
-        }
-
-        if (colour == "yellow")
-        {
-            cellImage.sprite = yellowSprite; // Directly test with one sprite
-
-        }
+        this.color = color;
+        Debug.Log("Color meant to place for player " + belongsTo + ": " + color);
+        cellImage.color = color;
+        
     }
 
     public int getBelongsTo()
@@ -92,7 +83,7 @@ public class CellController : MonoBehaviour, IPointerDownHandler
 
     public void setWon()
     {
-        cellImage.sprite = wonSprite; // Directly test with one sprite
+        cellImage.color = new Color(0, 0.5f, 0, 1);; // Directly test with one sprite
 
     }
 

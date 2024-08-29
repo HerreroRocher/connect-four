@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class MainMenuController : MonoBehaviour
 {
     public string[] players;
-    public string[] colours;
+    public Color[] colours;
     public int rows;
     public int columns;
     public int inARowRequirements;
@@ -17,15 +17,23 @@ public class MainMenuController : MonoBehaviour
     public TMP_InputField columnsReq;
     public TMP_InputField connectReq;
 
+    public FlexibleColorPicker colorPickerPlayer1;
+    public FlexibleColorPicker colorPickerPlayer2;
+
 
     // This method is called when the button is clicked
     public void OnPlayButtonClicked()
     {
-        players = new string[] { (player1NameIF.text != "" ? player1NameIF.text : "Daniel"), (player2NameIF.text != "" ? player2NameIF.text : "Natasja") }; 
-        rows = (int.TryParse(rowsReq.text, out rows) ? rows: 7 );
-        columns = (int.TryParse(columnsReq.text, out columns) ? columns : 7 );
-        inARowRequirements = (int.TryParse(connectReq.text, out inARowRequirements) ? inARowRequirements : 4 );
-        colours = new string[] { "red", "yellow" };
+        players = new string[] { (player1NameIF.text != "" ? player1NameIF.text : "Daniel"), (player2NameIF.text != "" ? player2NameIF.text : "Natasja") };
+        rows = (int.TryParse(rowsReq.text, out rows) ? rows : 7);
+        columns = (int.TryParse(columnsReq.text, out columns) ? columns : 7);
+        inARowRequirements = (int.TryParse(connectReq.text, out inARowRequirements) ? inARowRequirements : 4);
+        colours = new Color[] { colorPickerPlayer1.color, colorPickerPlayer2.color };
+
+        // Debug.Log(colorPickerPlayer1.color.GetType());
+        // Debug.Log(colorPickerPlayer2.color.GetType());
+        // Debug.Log("Player 1 color: " + colorPickerPlayer1.color);
+        // Debug.Log("Player 2 color: " + colorPickerPlayer2.color);
 
         // Load the gameboard scene
         setGameData();

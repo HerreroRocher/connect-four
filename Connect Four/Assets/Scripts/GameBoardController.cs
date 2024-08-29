@@ -21,7 +21,7 @@ public class NewBehaviourScript : MonoBehaviour
 
     private int nextPlayerTurn;
 
-    private string[] playerColours;
+    private Color[] playerColours;
 
     private string[] playerNames;
 
@@ -45,6 +45,8 @@ public class NewBehaviourScript : MonoBehaviour
         playerColours = GameData.colours;
 
         playerNames = GameData.players;
+
+        
 
         setSideText();
 

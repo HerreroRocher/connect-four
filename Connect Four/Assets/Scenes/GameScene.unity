@@ -224,8 +224,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 800, y: 650}
-  m_SizeDelta: {x: 350, y: 50}
+  m_AnchoredPosition: {x: 959.3013, y: 630.0659}
+  m_SizeDelta: {x: 384.6028, y: 105.8682}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &431921371
 MonoBehaviour:
@@ -310,7 +310,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -5.868408, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -620,6 +620,7 @@ MonoBehaviour:
   cols: 0
   rows: 6
   cellPrefab: {fileID: 4821124009919220470, guid: f9ec48d12092b4c4eb843813ea9889a3, type: 3}
+  inARowReq: 0
 --- !u!1 &742583419
 GameObject:
   m_ObjectHideFlags: 0
