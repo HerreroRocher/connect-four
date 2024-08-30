@@ -695,6 +695,8 @@ MonoBehaviour:
   columns: 7
   rows: 7
   columnPrefab: {fileID: 8237143448087638575, guid: 7d292303bb13a39429855244dfea4330, type: 3}
+  leftColumnPrefab: {fileID: 1506223428042847969, guid: 678429d77da0d914eb5513db982cba13, type: 3}
+  rightColumnPrefab: {fileID: 8028438152716795111, guid: 1922d02a27b44914ca873a67b9237c49, type: 3}
   inARowReq: 4
 --- !u!1 &742583419
 GameObject:

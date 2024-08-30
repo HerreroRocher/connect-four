@@ -11,23 +11,36 @@ public class ColumnController : MonoBehaviour
     private CellController[] cellGrid;
 
     public GameObject cellPrefab;
+    public Sprite basePieceSprite;
     private int rows;
+    private int column;
 
     public void InstantiateCells()
     {
-        Debug.Log("Column created");
-        for (int cellNo = 0; cellNo < rows; cellNo++)
+        // Debug.Log("Column created");
+        for (int cellRowNo = 0; cellRowNo < rows+1; cellRowNo++)
         {
-            GameObject cellObj = Instantiate(cellPrefab, transform);
-            cellGrid[cellNo] = cellObj.GetComponent<CellController>();
+            GameObject cellGameObj = Instantiate(cellPrefab, transform);
+            CellController cellInstance = cellGameObj.GetComponent<CellController>();
+            cellInstance.setRow(cellRowNo);
+            cellInstance.setColumn(column);
+            if (cellRowNo == 0){
+                cellInstance.setImage(basePieceSprite);
+            }
+            cellGrid[cellRowNo] = cellInstance;
         }
     }
 
     public void setRows(int rows)
     {
         this.rows = rows;
-        cellGrid = new CellController[rows];
+        cellGrid = new CellController[rows+1];
         InstantiateCells();
+    }
+
+    public void setColumn(int column)
+    {
+        this.column = column;
     }
 
 

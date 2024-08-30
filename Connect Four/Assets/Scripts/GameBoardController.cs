@@ -14,6 +14,8 @@ public class NewBehaviourScript : MonoBehaviour
     private GridLayoutGroup gridLayoutGroup;
 
     public GameObject columnPrefab;
+    public GameObject leftColumnPrefab;
+    public GameObject rightColumnPrefab;
 
     //want to reer to cell in column 3 row 4 as grid[3][4], so put array of columns, and then the row order 
 
@@ -46,7 +48,7 @@ public class NewBehaviourScript : MonoBehaviour
         columnGrid = new ColumnController[columns];
         InstantiateBoard();
 
-        Debug.Log("Board created");
+        // Debug.Log("Board created");
 
 
 
@@ -54,11 +56,25 @@ public class NewBehaviourScript : MonoBehaviour
 
     private void InstantiateBoard()
     {
-        for (int columnNo = 0; columnNo < columns; columnNo++)
+        for (int columnNo = -1; columnNo < columns + 1; columnNo++)
         {
-            GameObject columnObj = Instantiate(columnPrefab, transform);
-            columnGrid[columnNo] = columnObj.GetComponent<ColumnController>();
-            columnGrid[columnNo].setRows(rows);
+            if (columnNo == -1)
+            {
+                Instantiate(leftColumnPrefab, transform);
+            }
+            else if (columnNo == columns)
+            {
+                Instantiate(rightColumnPrefab, transform);
+
+            }
+            else
+            {
+                GameObject columnObj = Instantiate(columnPrefab, transform);
+                columnGrid[columnNo] = columnObj.GetComponent<ColumnController>();
+                columnGrid[columnNo].setColumn(columnNo+1);
+                columnGrid[columnNo].setRows(rows);
+            }
+
         }
     }
 
