@@ -9,83 +9,91 @@ public class CellController : MonoBehaviour, IPointerDownHandler
 {
     // Start is called before the first frame update
 
-    private bool occupied;
-    private Image cellImage;
+    private bool occupied = false;
+
+    // private Image cellImage = GetComponent<Image>();
+
     private int column;
     private int row;
 
-    private bool unattendedCheck;
+    private bool unattendedCheck = false;
 
-    private int belongsTo;
+
+    private int belongsTo = -1;
+
 
     private Color color;
 
+    public GameObject piecePrefab;
+
+    public void DropPiece(Vector2 spawnPosition)
+    {
+        Instantiate(piecePrefab, spawnPosition, Quaternion.identity);
+    }
     public void Start()
     {
-        // Debug.Log("Cell created");
-        occupied = false;
-        belongsTo = -1;
-        cellImage = GetComponent<Image>();
-        unattendedCheck = false;
+        Debug.Log("Cell created");
     }
 
     public void OnPointerDown(PointerEventData pointer)
     {
         // Debug.Log("Cell clicked");
         // Debug.Log("Clicked on cell in column " + (column + 1) + " row " + (row + 1));
-        unattendedCheck = true;
-    }
-
-
-    public void setCoords(int column, int row)
-    {
-        this.column = column;
-        this.row = row;
+        // unattendedCheck = true;
+        // DropPiece();
 
     }
 
-    public bool getUnattendedCheck()
-    {
-        return unattendedCheck;
-    }
 
-    public int getColumn()
-    {
-        return column;
-    }
+    // public void setCoords(int column, int row)
+    // {
+    //     this.column = column;
+    //     this.row = row;
 
-    public void setCheckAttended()
-    {
-        unattendedCheck = false;
-    }
+    // }
 
-    public bool getUnoccupied()
-    {
-        return !occupied;
-    }
+    // public bool getUnattendedCheck()
+    // {
+    //     return unattendedCheck;
+    // }
 
-    public void setOccupied(Color color, int belongsTo)
-    {
-        // Debug.Log("Set Occupied at column " + (column + 1) + " row " + (row + 1));
-        occupied = true;
-        this.belongsTo = belongsTo;
-        this.color = color;
-        // Debug.Log("Color meant to place for player " + belongsTo + ": " + color);
-        cellImage.color = color;
+    // public int getColumn()
+    // {
+    //     return column;
+    // }
 
-    }
+    // public void setCheckAttended()
+    // {
+    //     unattendedCheck = false;
+    // }
 
-    public int getBelongsTo()
-    {
+    // public bool getUnoccupied()
+    // {
+    //     return !occupied;
+    // }
 
-        return belongsTo;
-    }
+    // public void setOccupied(Color color, int belongsTo)
+    // {
+    //     // Debug.Log("Set Occupied at column " + (column + 1) + " row " + (row + 1));
+    //     occupied = true;
+    //     this.belongsTo = belongsTo;
+    //     this.color = color;
+    //     // Debug.Log("Color meant to place for player " + belongsTo + ": " + color);
+    //     cellImage.color = color;
 
-    public void setWon()
-    {
-        cellImage.color = new Color(0, 0.5f, 0, 1); ; // Directly test with one sprite
+    // }
 
-    }
+    // public int getBelongsTo()
+    // {
+
+    //     return belongsTo;
+    // }
+
+    // public void setWon()
+    // {
+    //     cellImage.color = new Color(0, 0.5f, 0, 1); ; // Directly test with one sprite
+
+    // }
 
 
 
