@@ -33,23 +33,36 @@ public class NewBehaviourScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cols = GameData.columns;
-        rows = GameData.rows;
-        
-        inARowReq = GameData.inARowRequirements;
+        // cols = GameData.columns;
+        // rows = GameData.rows;
+
+        // inARowReq = GameData.inARowRequirements;
+
+        // nextPlayerTurn = 0;
+
+        // gameOver = false;
+
+        // playerColours = GameData.colours;
+
+        // playerNames = GameData.players;
+
+
+        // START OF STATIC DATA
+
+        cols = 7;
+        rows = 7;
+
+        inARowReq = 4;
 
         nextPlayerTurn = 0;
 
         gameOver = false;
 
-        playerColours = GameData.colours;
+        playerColours = new Color[] {Color.red, Color.yellow };
 
-        playerNames = GameData.players;
-
-        
+        playerNames = new string[]  {"Daniel", "Natasja"};
 
         setSideText();
-
 
 
         gridLayoutGroup = GetComponent<GridLayoutGroup>();

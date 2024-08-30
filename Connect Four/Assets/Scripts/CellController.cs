@@ -72,7 +72,7 @@ public class CellController : MonoBehaviour, IPointerDownHandler
         this.color = color;
         // Debug.Log("Color meant to place for player " + belongsTo + ": " + color);
         cellImage.color = color;
-        
+
     }
 
     public int getBelongsTo()
@@ -83,7 +83,7 @@ public class CellController : MonoBehaviour, IPointerDownHandler
 
     public void setWon()
     {
-        cellImage.color = new Color(0, 0.5f, 0, 1);; // Directly test with one sprite
+        cellImage.color = new Color(0, 0.5f, 0, 1); ; // Directly test with one sprite
 
     }
 
