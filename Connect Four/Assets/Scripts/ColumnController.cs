@@ -20,8 +20,9 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
     private int bottomCellIndex = 0;
     private bool hasUnattendedCheck = false;
     private PieceController pieceThatNeedsColouring;
-    private bool waitingForPieceToDrop = false;
+    public bool waitingForPieceToDrop = false;
     private PieceController pieceWeWaitingFor;
+    private bool thisColumnWaiting = false;
 
 
     public void InstantiateCells()
@@ -56,8 +57,12 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
     {
         // Debug.Log("Cell clicked");
         // Debug.Log("Clicked on cell in column " + column);
-        pieceThatNeedsColouring = DropPiece();
-        hasUnattendedCheck = true;
+        if (!waitingForPieceToDrop)
+        {
+
+            pieceThatNeedsColouring = DropPiece();
+            hasUnattendedCheck = true;
+        }
 
     }
 
@@ -74,20 +79,20 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
     {
         pieceWeWaitingFor = piece;
         waitingForPieceToDrop = true;
+        thisColumnWaiting = true;
 
     }
 
     public void Update()
     {
-        if (waitingForPieceToDrop)
+        if (waitingForPieceToDrop && thisColumnWaiting)
         {
             if (pieceWeWaitingFor.getStoppedMoving())
             {
                 getBottomCell().setPiece(pieceWeWaitingFor);
                 bottomCellIndex += 1;
                 waitingForPieceToDrop = false;
-
-
+                thisColumnWaiting = false;
             }
         }
     }

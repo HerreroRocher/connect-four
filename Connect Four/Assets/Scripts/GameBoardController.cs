@@ -32,6 +32,7 @@ public class NewBehaviourScript : MonoBehaviour
 
 
     public int inARowReq = 4;
+    private bool waitingForPieceInBoard = false;
 
 
 
@@ -56,6 +57,30 @@ public class NewBehaviourScript : MonoBehaviour
     void Update()
     {
         checkCellClicks();
+        waitingForPieceInBoard = updateWaitingForPieceInBoard();
+        setWaitingForPieceInBoard();
+    }
+
+    private bool updateWaitingForPieceInBoard()
+    {
+
+        for (int column = 0; column < columns; column++)
+        {
+            if (columnGrid[column].waitingForPieceToDrop != waitingForPieceInBoard)
+            {
+                return columnGrid[column].waitingForPieceToDrop;
+            }
+        }
+        return waitingForPieceInBoard;
+    }
+
+    private void setWaitingForPieceInBoard()
+    {
+        for (int column = 0; column < columns; column++)
+        {
+            columnGrid[column].waitingForPieceToDrop = waitingForPieceInBoard;
+
+        }
     }
 
     private void InstantiateBoard()
