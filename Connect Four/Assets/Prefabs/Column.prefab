@@ -76,6 +76,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellPrefab: {fileID: 4821124009919220470, guid: f9ec48d12092b4c4eb843813ea9889a3, type: 3}
   basePieceSprite: {fileID: 21300000, guid: 428f67aca992bf74d93d2fd830f96e49, type: 3}
+  piecePrefab: {fileID: 8155312147450141532, guid: a2346230878f97f44a61f322c6a7e57d, type: 3}
 --- !u!222 &2282838604327236010
 CanvasRenderer:
   m_ObjectHideFlags: 0

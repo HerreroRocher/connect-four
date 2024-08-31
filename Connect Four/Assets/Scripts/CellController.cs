@@ -5,44 +5,45 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class CellController : MonoBehaviour, IPointerDownHandler
+public class CellController : MonoBehaviour
 {
     // Start is called before the first frame update
 
     private bool occupied = false;
+    private PieceController piece;
     private int column;
     private int row;
     public GameObject piecePrefab;
+    private BoxCollider2D boxCollider;
 
-    public void DropPiece(Vector2 spawnPosition)
-    {
-        Instantiate(piecePrefab, spawnPosition, Quaternion.identity);
-    }
+
+
     public void Start()
     {
         // Debug.Log("Cell created");
-    }
+        boxCollider = GetComponent<BoxCollider2D>();
 
-    public void setRow(int row){
+    }
+    public void setRow(int row)
+    {
         this.row = row;
     }
 
-    public void setColumn(int column){
+    public void setColumn(int column)
+    {
         this.column = column;
     }
 
-    public void setImage(Sprite sprite){
+    public void setImage(Sprite sprite)
+    {
         GetComponent<Image>().sprite = sprite;
     }
 
-    public void OnPointerDown(PointerEventData pointer)
-    {
-        // Debug.Log("Cell clicked");
-        Debug.Log("Clicked on cell in column " + column + " row " + row);
-        // unattendedCheck = true;
-        // DropPiece();
-
+    void setPiece(PieceController piece){
+        this.piece = piece;
+        occupied = true;
     }
+
 
     // public int getColumn()
     // {
