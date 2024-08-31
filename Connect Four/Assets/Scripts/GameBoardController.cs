@@ -9,8 +9,8 @@ public class NewBehaviourScript : MonoBehaviour
 
     public TextMeshProUGUI NextPlayer; // Use TextMeshProUGUI for UI text components
 
-    public int columns = 7;
-    public int rows = 7;
+    public int columns;
+    public int rows;
     private GridLayoutGroup gridLayoutGroup;
 
     public GameObject columnPrefab;
@@ -24,14 +24,14 @@ public class NewBehaviourScript : MonoBehaviour
 
     private int nextPlayerTurn = 0;
 
-    private Color[] playerColours = new Color[] { Color.red, Color.yellow };
+    private Color[] playerColours;
 
-    private string[] playerNames = new string[] { "Daniel", "Natasja" };
+    private string[] playerNames;
 
     private bool gameOver = false;
 
 
-    public int inARowReq = 4;
+    public int inARowReq;
     private bool waitingForPieceInBoard = false;
 
 
@@ -39,12 +39,14 @@ public class NewBehaviourScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // columns = GameData.columns;
-        // rows = GameData.rows;
-        // inARowReq = GameData.inARowRequirements;
-        // playerColours = GameData.colours;
-        // playerNames = GameData.players;
-        // Debug.Log("Start method called");
+
+
+        columns = GameData.columns;
+        rows = GameData.rows;
+        inARowReq = GameData.inARowRequirements;
+        playerColours = GameData.colours;
+        playerNames = GameData.players;
+
 
         columnGrid = new ColumnController[columns];
         InstantiateBoard();

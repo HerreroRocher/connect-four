@@ -25,9 +25,9 @@ public class MainMenuController : MonoBehaviour
     public void OnPlayButtonClicked()
     {
         players = new string[] { (player1NameIF.text != "" ? player1NameIF.text : "Daniel"), (player2NameIF.text != "" ? player2NameIF.text : "Natasja") };
-        rows = (int.TryParse(rowsReq.text, out rows) ? rows : 7);
-        columns = (int.TryParse(columnsReq.text, out columns) ? columns : 7);
-        inARowRequirements = (int.TryParse(connectReq.text, out inARowRequirements) ? inARowRequirements : 4);
+        rows = rowsReq != null ? (int.TryParse(rowsReq.text, out rows) ? rows : 7) : 7;
+        columns = columnsReq != null ?(int.TryParse(columnsReq.text, out columns) ? columns : 7) : 7;
+        inARowRequirements = connectReq != null ? (int.TryParse(connectReq.text, out inARowRequirements) ? inARowRequirements : 4) : 4;
         colours = new Color[] { colorPickerPlayer1.color, colorPickerPlayer2.color };
 
         // Debug.Log(colorPickerPlayer1.color.GetType());
