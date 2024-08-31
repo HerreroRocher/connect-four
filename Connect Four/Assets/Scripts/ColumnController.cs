@@ -23,6 +23,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
     public bool waitingForPieceToDrop = false;
     private PieceController pieceWeWaitingFor;
     private bool thisColumnWaiting = false;
+    public bool gameOver = false;
 
 
     public void InstantiateCells()
@@ -57,7 +58,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
     {
         // Debug.Log("Cell clicked");
         // Debug.Log("Clicked on cell in column " + column);
-        if (!waitingForPieceToDrop)
+        if (!waitingForPieceToDrop && !gameOver)
         {
 
             pieceThatNeedsColouring = DropPiece();

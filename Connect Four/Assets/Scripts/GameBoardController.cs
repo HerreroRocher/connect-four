@@ -59,6 +59,16 @@ public class NewBehaviourScript : MonoBehaviour
         checkCellClicks();
         waitingForPieceInBoard = updateWaitingForPieceInBoard();
         setWaitingForPieceInBoard();
+        updateGameOverToColumns();
+    }
+
+    private void updateGameOverToColumns()
+    {
+        for (int column = 0; column < columns; column++)
+        {
+            columnGrid[column].gameOver = gameOver;
+
+        }
     }
 
     private bool updateWaitingForPieceInBoard()
@@ -68,6 +78,11 @@ public class NewBehaviourScript : MonoBehaviour
         {
             if (columnGrid[column].waitingForPieceToDrop != waitingForPieceInBoard)
             {
+                if (columnGrid[column].waitingForPieceToDrop == false)
+                {
+                    GameWonCheck(1 - nextPlayerTurn);
+                    // GameWonCheck(nextPlayerTurn);
+                }
                 return columnGrid[column].waitingForPieceToDrop;
             }
         }
@@ -127,34 +142,6 @@ public class NewBehaviourScript : MonoBehaviour
 
     }
 
-    // public void setLowestCellInCol(int column)
-    // {
-
-    //     if (!gameOver)
-    //     {
-    //         for (int row = 0; row < rows; row++)
-    //         {
-    //             CellController currentCellChecking = grid[column, row];
-    //             if (currentCellChecking.getUnoccupied() == true)
-    //             {
-    //                 // Debug.Log("Found unoccupied cell at column " + (column + 1) + " row " + (row + 1));
-    //                 currentCellChecking.setOccupied(playerColours[nextPlayerTurn], nextPlayerTurn);
-
-    //                 if (!GameWonCheck(nextPlayerTurn))
-    //                 {
-    //                     switchTurns();
-    //                     setSideText();
-    //                 }
-
-
-    //                 break;
-    //             }
-    //         }
-
-    //     }
-
-    // }
-
     public void switchTurns()
     {
         nextPlayerTurn = 1 - nextPlayerTurn;
@@ -176,7 +163,7 @@ public class NewBehaviourScript : MonoBehaviour
 
         if (checkWinner(playerNo))
         {
-            Debug.Log("WINNER");
+            // Debug.Log("WINNER");
             gameOver = true;
             NextPlayer.text = playerNames[playerNo] + " wins!";
             return true;
