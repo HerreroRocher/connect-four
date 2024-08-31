@@ -11,30 +11,31 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
     private CellController[] cellGrid;
 
     public GameObject cellPrefab;
-    public Sprite basePieceSprite;
+    public GameObject baseCellPrefab;
     private int rows;
     private int column;
 
     public GameObject piecePrefab;
 
     private int bottomCellIndex = 0;
-
-    public Transform targetCanvas;
+    private bool hasUnattendedCheck = false;
+    private PieceController pieceThatNeedsColouring;
+    private bool waitingForPieceToDrop = false;
+    private PieceController pieceWeWaitingFor;
 
 
     public void InstantiateCells()
     {
+        Instantiate(baseCellPrefab, transform);
+
         // Debug.Log("Column created");
-        for (int cellRowNo = 0; cellRowNo < rows + 1; cellRowNo++)
+        for (int cellRowNo = 0; cellRowNo < rows; cellRowNo++)
         {
             GameObject cellGameObj = Instantiate(cellPrefab, transform);
             CellController cellInstance = cellGameObj.GetComponent<CellController>();
             cellInstance.setRow(cellRowNo);
             cellInstance.setColumn(column);
-            if (cellRowNo == 0)
-            {
-                cellInstance.setImage(basePieceSprite);
-            }
+
             cellGrid[cellRowNo] = cellInstance;
         }
     }
@@ -42,7 +43,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
     public void setRows(int rows)
     {
         this.rows = rows;
-        cellGrid = new CellController[rows + 1];
+        cellGrid = new CellController[rows];
         InstantiateCells();
     }
 
@@ -55,21 +56,65 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
     {
         // Debug.Log("Cell clicked");
         // Debug.Log("Clicked on cell in column " + column);
-        DropPiece();
+        pieceThatNeedsColouring = DropPiece();
+        hasUnattendedCheck = true;
 
     }
 
-    public void DropPiece()
+    public PieceController DropPiece()
     {
-        bottomCellIndex += 1;
         Vector3 spawnPosition = transform.position + new Vector3(0, 5, 0);
         PieceController piece = Instantiate(piecePrefab, spawnPosition, Quaternion.identity, transform).GetComponent<PieceController>();
         piece.setParent(cellGrid[bottomCellIndex].gameObject);
-        getBottomCell().setPiece(piece);
+        setPieceWhenDropped(piece);
+        return piece;
     }
 
-    public CellController getBottomCell(){
-        return cellGrid[bottomCellIndex+1];
+    public void setPieceWhenDropped(PieceController piece)
+    {
+        pieceWeWaitingFor = piece;
+        waitingForPieceToDrop = true;
+
+    }
+
+    public void Update()
+    {
+        if (waitingForPieceToDrop)
+        {
+            if (pieceWeWaitingFor.getStoppedMoving())
+            {
+                getBottomCell().setPiece(pieceWeWaitingFor);
+                bottomCellIndex += 1;
+                waitingForPieceToDrop = false;
+
+
+            }
+        }
+    }
+
+    public CellController getBottomCell()
+    {
+        return cellGrid[bottomCellIndex];
+    }
+
+    public bool getHasUnattendedCheck()
+    {
+        return hasUnattendedCheck;
+    }
+
+    public PieceController getPieceThatNeedsColouring()
+    {
+        return pieceThatNeedsColouring;
+    }
+
+    public void setCheckAttendedTo()
+    {
+        hasUnattendedCheck = false;
+    }
+
+    public CellController getCellAtRow(int row)
+    {
+        return cellGrid[row];
     }
 
 

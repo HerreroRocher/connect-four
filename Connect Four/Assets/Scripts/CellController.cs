@@ -39,9 +39,15 @@ public class CellController : MonoBehaviour
         GetComponent<Image>().sprite = sprite;
     }
 
-    void setPiece(PieceController piece){
+    public void setPiece(PieceController piece)
+    {
         this.piece = piece;
         occupied = true;
+    }
+
+    public PieceController getPiece()
+    {
+        return piece;
     }
 
 
@@ -51,33 +57,16 @@ public class CellController : MonoBehaviour
     // }
 
 
-    // public bool getUnoccupied()
-    // {
-    //     return !occupied;
-    // }
+    public bool getOccupied()
+    {
+        return occupied;
+    }
 
-    // public void setOccupied(Color color, int belongsTo)
-    // {
-    //     // Debug.Log("Set Occupied at column " + (column + 1) + " row " + (row + 1));
-    //     occupied = true;
-    //     this.belongsTo = belongsTo;
-    //     this.color = color;
-    //     // Debug.Log("Color meant to place for player " + belongsTo + ": " + color);
-    //     cellImage.color = color;
 
-    // }
-
-    // public int getBelongsTo()
-    // {
-
-    //     return belongsTo;
-    // }
-
-    // public void setWon()
-    // {
-    //     cellImage.color = new Color(0, 0.5f, 0, 1); ; // Directly test with one sprite
-
-    // }
+    public void setWon()
+    {
+        piece.setColour(new Color(0, 0.5f, 0, 1));
+    }
 
 
 

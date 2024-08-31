@@ -17,6 +17,7 @@ public class PieceController : MonoBehaviour
     private Vector3 startPosition;
     private Vector3 spawnPosition;
     private bool canvasSwitched = false;
+    private int belongsTo;
 
     public void Start()
     {
@@ -44,7 +45,7 @@ public class PieceController : MonoBehaviour
 
     void StopPiece()
     {
-        Debug.Log("Collision detected");
+        // Debug.Log("Collision detected");
         rigidbody.velocity = Vector2.zero;
         rigidbody.gravityScale = 0;
         rigidbody.angularVelocity = 0;
@@ -54,6 +55,10 @@ public class PieceController : MonoBehaviour
         SetPieceCoordinates(parentCoordinates);
     }
 
+    public bool getStoppedMoving()
+    {
+        return stoppedMoving;
+    }
     void SetPieceCoordinates(Vector3 coordinates)
     {
         this.transform.position = coordinates;
@@ -64,10 +69,10 @@ public class PieceController : MonoBehaviour
         // Debug.Log(transform.position);
         if (parentSet)
         {
-            Debug.Log("this.transform.position: " + this.transform.position);
-            Debug.Log("parentCoordinates " + parentCoordinates);
-            Debug.Log("rigidbody.velocity " + rigidbody.velocity);
-            Debug.Log("Vector2.zero " + Vector2.zero);
+            // Debug.Log("this.transform.position: " + this.transform.position);
+            // Debug.Log("parentCoordinates " + parentCoordinates);
+            // Debug.Log("rigidbody.velocity " + rigidbody.velocity);
+            // Debug.Log("Vector2.zero " + Vector2.zero);
             if (this.transform.position.y <= parentCoordinates.y && rigidbody.velocity != Vector2.zero)
             {
                 StopPiece();
@@ -88,5 +93,21 @@ public class PieceController : MonoBehaviour
             }
         }
     }
+
+    public void setColour(Color colour)
+    {
+        this.GetComponent<Image>().color = colour;
+    }
+
+    public void setBelongsTo(int belongsTo)
+    {
+        this.belongsTo = belongsTo;
+    }
+
+    public int getBelongsTo()
+    {
+        return belongsTo;
+    }
+
 
 }
