@@ -14,8 +14,11 @@ public class NewBehaviourScript : MonoBehaviour
     private GridLayoutGroup gridLayoutGroup;
 
     public GameObject columnPrefab;
-    public GameObject leftColumnPrefab;
-    public GameObject rightColumnPrefab;
+
+    public GameObject baseRow;
+    public GameObject baseCellPrefab;
+    public GameObject leftBaseCellPrefab;
+    public GameObject rightBaseCellPrefab;
 
     //want to reer to cell in column 3 row 4 as grid[3][4], so put array of columns, and then the row order 
 
@@ -102,8 +105,12 @@ public class NewBehaviourScript : MonoBehaviour
 
     private void InstantiateBoard()
     {
-        Instantiate(leftColumnPrefab, transform);
+        InstantiateBaseRow();
+        InstantiateColumns();
+    }
 
+    private void InstantiateColumns()
+    {
         for (int columnNo = 0; columnNo < columns; columnNo++)
         {
             GameObject columnObj = Instantiate(columnPrefab, transform);
@@ -111,8 +118,28 @@ public class NewBehaviourScript : MonoBehaviour
             columnGrid[columnNo].setColumn(columnNo + 1);
             columnGrid[columnNo].setRows(rows);
         }
+    }
 
-        Instantiate(rightColumnPrefab, transform);
+    private void InstantiateBaseRow()
+    {
+        for (int columnNo = -1; columnNo < columns + 1; columnNo++)
+        {
+            if (columnNo == -1)
+            {
+                GameObject baseCellObj = Instantiate(leftBaseCellPrefab, baseRow.transform);
+
+            }
+            else if (columnNo == columns)
+            {
+                GameObject baseCellObj = Instantiate(rightBaseCellPrefab, baseRow.transform);
+
+            }
+            else
+            {
+
+                GameObject baseCellObj = Instantiate(baseCellPrefab, baseRow.transform);
+            }
+        }
     }
 
 

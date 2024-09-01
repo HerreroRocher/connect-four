@@ -11,7 +11,6 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
     private CellController[] cellGrid;
 
     public GameObject cellPrefab;
-    public GameObject baseCellPrefab;
     private int rows;
     private int column;
 
@@ -28,8 +27,6 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
 
     public void InstantiateCells()
     {
-        Instantiate(baseCellPrefab, transform);
-
         // Debug.Log("Column created");
         for (int cellRowNo = 0; cellRowNo < rows; cellRowNo++)
         {
