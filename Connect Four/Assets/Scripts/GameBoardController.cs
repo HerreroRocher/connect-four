@@ -11,10 +11,7 @@ public class NewBehaviourScript : MonoBehaviour
 
     public int columns;
     public int rows;
-    private GridLayoutGroup gridLayoutGroup;
-
     public GameObject columnPrefab;
-
     public GameObject baseRow;
     public GameObject baseCellPrefab;
     public GameObject leftBaseCellPrefab;
@@ -32,7 +29,6 @@ public class NewBehaviourScript : MonoBehaviour
     private string[] playerNames;
 
     private bool gameOver = false;
-
 
     public int inARowReq;
     private bool waitingForPieceInBoard = false;

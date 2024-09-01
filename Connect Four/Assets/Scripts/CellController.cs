@@ -11,32 +11,13 @@ public class CellController : MonoBehaviour
 
     private bool occupied = false;
     private PieceController piece;
-    private int column;
-    private int row;
-    public GameObject piecePrefab;
     private BoxCollider2D boxCollider;
-
-
 
     public void Start()
     {
         // Debug.Log("Cell created");
         boxCollider = GetComponent<BoxCollider2D>();
 
-    }
-    public void setRow(int row)
-    {
-        this.row = row;
-    }
-
-    public void setColumn(int column)
-    {
-        this.column = column;
-    }
-
-    public void setImage(Sprite sprite)
-    {
-        GetComponent<Image>().sprite = sprite;
     }
 
     public void setPiece(PieceController piece)
@@ -49,13 +30,6 @@ public class CellController : MonoBehaviour
     {
         return piece;
     }
-
-
-    // public int getColumn()
-    // {
-    //     return column;
-    // }
-
 
     public bool getOccupied()
     {

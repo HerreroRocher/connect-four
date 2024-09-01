@@ -9,13 +9,10 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
 {
 
     private CellController[] cellGrid;
-
     public GameObject cellPrefab;
     private int rows;
     private int column;
-
     public GameObject piecePrefab;
-
     private int bottomCellIndex = 0;
     private bool hasUnattendedCheck = false;
     private PieceController pieceThatNeedsColouring;
@@ -32,9 +29,6 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
         {
             GameObject cellGameObj = Instantiate(cellPrefab, transform);
             CellController cellInstance = cellGameObj.GetComponent<CellController>();
-            cellInstance.setRow(cellRowNo);
-            cellInstance.setColumn(column);
-
             cellGrid[cellRowNo] = cellInstance;
         }
     }
@@ -85,7 +79,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
     {
         if (waitingForPieceToDrop && thisColumnWaiting)
         {
-            if (pieceWeWaitingFor.getStoppedMoving())
+            if (pieceWeWaitingFor.getStoppedMoving()
             {
                 getBottomCell().setPiece(pieceWeWaitingFor);
                 bottomCellIndex += 1;
