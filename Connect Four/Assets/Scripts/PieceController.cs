@@ -32,6 +32,7 @@ public class PieceController : MonoBehaviour
         if (backgroundAndPiecesCanvas != null)
         {
             this.transform.SetParent(backgroundAndPiecesCanvas.transform, false);
+            gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(105, 105);
 
 
         }

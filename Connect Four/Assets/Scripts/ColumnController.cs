@@ -79,7 +79,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
     {
         if (waitingForPieceToDrop && thisColumnWaiting)
         {
-            if (pieceWeWaitingFor.getStoppedMoving()
+            if (pieceWeWaitingFor.getStoppedMoving())
             {
                 getBottomCell().setPiece(pieceWeWaitingFor);
                 bottomCellIndex += 1;
