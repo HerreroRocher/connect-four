@@ -22,8 +22,15 @@ public class PieceController : MonoBehaviour
     public void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+        if (rigidbody == null)
+        {
+            Debug.LogError("Rigidbody2D component is missing from this GameObject!");
+        } else {
+            // Debug.Log("Rigidbody initialised");
+        }
         backgroundAndPiecesCanvas = GameObject.FindGameObjectWithTag("Background and Pieces Canvas");
 
+        startPosition = transform.position;
     }
 
     public void switchCanvas()
@@ -109,6 +116,12 @@ public class PieceController : MonoBehaviour
     public int getBelongsTo()
     {
         return belongsTo;
+    }
+    public void setDynamic()
+    {
+        // Debug.Log(rigidbody);
+        // Debug.Log(rigidbody == null);
+        rigidbody.bodyType = RigidbodyType2D.Dynamic;
     }
 
 

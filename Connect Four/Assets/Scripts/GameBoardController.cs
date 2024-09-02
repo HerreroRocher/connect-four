@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class NewBehaviourScript : MonoBehaviour
+public class GameBoardController : MonoBehaviour
 {
 
     public TextMeshProUGUI NextPlayer; // Use TextMeshProUGUI for UI text components
@@ -31,7 +31,7 @@ public class NewBehaviourScript : MonoBehaviour
     private bool gameOver = false;
 
     public int inARowReq;
-    private bool waitingForPieceInBoard = false;
+    private bool waitingForPieceToLand = false;
 
 
 
@@ -49,7 +49,7 @@ public class NewBehaviourScript : MonoBehaviour
 
         columnGrid = new ColumnController[columns];
         InstantiateBoard();
-        setSideText();
+        NextPlayer.text = "It's your turn,\n" + playerNames[nextPlayerTurn];
 
         // Debug.Log("Board created");
     }
@@ -57,13 +57,14 @@ public class NewBehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        checkCellClicks();
-        waitingForPieceInBoard = updateWaitingForPieceInBoard();
-        setWaitingForPieceInBoard();
-        updateGameOverToColumns();
+        checkForColumnSignals();
+        getWaitingForStatuses();
+        setWaitingForStatuses();
+        setGameOverStatus();
+
     }
 
-    private void updateGameOverToColumns()
+    private void setGameOverStatus()
     {
         for (int column = 0; column < columns; column++)
         {
@@ -72,29 +73,38 @@ public class NewBehaviourScript : MonoBehaviour
         }
     }
 
-    private bool updateWaitingForPieceInBoard()
+    private void getWaitingForStatuses()
     {
 
         for (int column = 0; column < columns; column++)
         {
-            if (columnGrid[column].waitingForPieceToDrop != waitingForPieceInBoard)
+            if (columnGrid[column].thisColumnWaitingForPieceToLand != waitingForPieceToLand)
             {
-                if (columnGrid[column].waitingForPieceToDrop == false)
+                if (columnGrid[column].thisColumnWaitingForPieceToLand == false)
                 {
+                    //This runs when a piece in any column lands
                     GameWonCheck(1 - nextPlayerTurn);
+                    waitingForPieceToLand = false;
+
                     // GameWonCheck(nextPlayerTurn);
                 }
-                return columnGrid[column].waitingForPieceToDrop;
+                else{
+                    //This runs when a piece in any column starts falling
+                    waitingForPieceToLand = true;
+                }
             }
         }
-        return waitingForPieceInBoard;
+
     }
 
-    private void setWaitingForPieceInBoard()
+    private void setWaitingForStatuses()
     {
         for (int column = 0; column < columns; column++)
         {
-            columnGrid[column].waitingForPieceToDrop = waitingForPieceInBoard;
+            if (columnGrid[column].thisColumnWaitingForPieceToLand != waitingForPieceToLand){
+                columnGrid[column].anotherColumnWaitingForPieceToLand = waitingForPieceToLand;
+            } 
+            
 
         }
     }
@@ -140,46 +150,30 @@ public class NewBehaviourScript : MonoBehaviour
 
 
 
-    public void checkCellClicks()
+    public void checkForColumnSignals()
     {
 
         for (int column = 0; column < columns; column++)
         {
-            if (columnGrid[column].getHasUnattendedCheck())
+            ColumnController columnController = columnGrid[column];
+            if (columnController.pieceNeedsToBeParentedAndColoured)
             {
-                handleClick(columnGrid[column]);
+                PieceController piece = columnController.unplacedPiece;
+                piece.setColour(playerColours[nextPlayerTurn]);
+                piece.setBelongsTo(nextPlayerTurn);
+                columnController.pieceNeedsToBeParentedAndColoured = false;
+
             }
+
+            if (!GameWonCheck(nextPlayerTurn) && columnController.turnNeedsToBeSwitched)
+            {
+                nextPlayerTurn = 1 - nextPlayerTurn;
+                NextPlayer.text = "It's your turn,\n" + playerNames[nextPlayerTurn];
+                columnController.turnNeedsToBeSwitched = false;
+
+            }
+
         }
-
-    }
-
-    public void handleClick(ColumnController column)
-    {
-        PieceController piece = column.getPieceThatNeedsColouring();
-        piece.setColour(playerColours[nextPlayerTurn]);
-        piece.setBelongsTo(nextPlayerTurn);
-        column.setCheckAttendedTo();
-        if (!GameWonCheck(nextPlayerTurn))
-        {
-            switchTurns();
-            setSideText();
-        }
-
-    }
-
-    public void switchTurns()
-    {
-        nextPlayerTurn = 1 - nextPlayerTurn;
-    }
-
-
-
-    private void setSideText()
-    {
-        // Debug.Log("text switch method called");
-        // Debug.Log("player no " + nextPlayerTurn);
-        // Debug.Log("player name " + playerNames[nextPlayerTurn]);
-        NextPlayer.text = "It's your turn,\n" + playerNames[nextPlayerTurn];
 
     }
 

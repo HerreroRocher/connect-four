@@ -5,31 +5,29 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class ColumnController : MonoBehaviour, IPointerDownHandler
+public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
 
     private CellController[] cellGrid;
+    public PieceController unplacedPiece;
     public GameObject cellPrefab;
+    public GameObject piecePrefab;
     private int rows;
     private int column;
-    public GameObject piecePrefab;
     private int bottomCellIndex = 0;
-    private bool hasUnattendedCheck = false;
-    private PieceController pieceThatNeedsColouring;
-    public bool waitingForPieceToDrop = false;
-    private PieceController pieceWeWaitingFor;
-    private bool thisColumnWaiting = false;
+    public bool pieceNeedsToBeParentedAndColoured = false;
+    public bool thisColumnWaitingForPieceToLand = false;
+    public bool anotherColumnWaitingForPieceToLand = false;
     public bool gameOver = false;
-
+    public bool hovering = false;
+    public bool turnNeedsToBeSwitched = false;
 
     public void InstantiateCells()
     {
         // Debug.Log("Column created");
         for (int cellRowNo = 0; cellRowNo < rows; cellRowNo++)
         {
-            GameObject cellGameObj = Instantiate(cellPrefab, transform);
-            CellController cellInstance = cellGameObj.GetComponent<CellController>();
-            cellGrid[cellRowNo] = cellInstance;
+            cellGrid[cellRowNo] = Instantiate(cellPrefab, transform).GetComponent<CellController>();
         }
     }
 
@@ -49,64 +47,71 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler
     {
         // Debug.Log("Cell clicked");
         // Debug.Log("Clicked on cell in column " + column);
-        if (!waitingForPieceToDrop && !gameOver)
+        if (unplacedPiece != null && !gameOver)
         {
-
-            pieceThatNeedsColouring = DropPiece();
-            hasUnattendedCheck = true;
+            unplacedPiece.setParent(cellGrid[bottomCellIndex].gameObject);
+            unplacedPiece.setDynamic();
+            thisColumnWaitingForPieceToLand = true;
+            turnNeedsToBeSwitched = true;
         }
 
     }
 
-    public PieceController DropPiece()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        Vector3 spawnPosition = transform.position + new Vector3(0, 5, 0);
-        PieceController piece = Instantiate(piecePrefab, spawnPosition, Quaternion.identity, transform).GetComponent<PieceController>();
-        piece.setParent(cellGrid[bottomCellIndex].gameObject);
-        setPieceWhenDropped(piece);
-        return piece;
+        hovering = true;
+        createPiece();
     }
 
-    public void setPieceWhenDropped(PieceController piece)
+    public void createPiece()
     {
-        pieceWeWaitingFor = piece;
-        waitingForPieceToDrop = true;
-        thisColumnWaiting = true;
-
+        if (!thisColumnWaitingForPieceToLand && !anotherColumnWaitingForPieceToLand && !gameOver)
+        {
+            unplacedPiece = Instantiate(piecePrefab, transform.position + new Vector3(0, 5, 0), Quaternion.identity, transform).GetComponent<PieceController>();
+            pieceNeedsToBeParentedAndColoured = true;
+        }
     }
+
+
+
+    // Called when the pointer exits the UI element or GameObject
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        hovering = false;
+        if (unplacedPiece != null && !thisColumnWaitingForPieceToLand)
+        {
+            Destroy(unplacedPiece.gameObject);
+            unplacedPiece = null;
+        }
+    }
+
 
     public void Update()
     {
-        if (waitingForPieceToDrop && thisColumnWaiting)
+        if (thisColumnWaitingForPieceToLand)
         {
-            if (pieceWeWaitingFor.getStoppedMoving())
+
+            if (unplacedPiece.getStoppedMoving())
             {
-                getBottomCell().setPiece(pieceWeWaitingFor);
+                getBottomCell().setPiece(unplacedPiece);
+                unplacedPiece = null;
                 bottomCellIndex += 1;
-                waitingForPieceToDrop = false;
-                thisColumnWaiting = false;
+                thisColumnWaitingForPieceToLand = false;
+                if (hovering)
+                {
+                    createPiece();
+                }
+
             }
+
         }
+
+
     }
 
     public CellController getBottomCell()
     {
         return cellGrid[bottomCellIndex];
-    }
-
-    public bool getHasUnattendedCheck()
-    {
-        return hasUnattendedCheck;
-    }
-
-    public PieceController getPieceThatNeedsColouring()
-    {
-        return pieceThatNeedsColouring;
-    }
-
-    public void setCheckAttendedTo()
-    {
-        hasUnattendedCheck = false;
     }
 
     public CellController getCellAtRow(int row)
