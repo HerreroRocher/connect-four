@@ -7,30 +7,20 @@ using TMPro;
 public class GameBoardController : MonoBehaviour
 {
 
-    public TextMeshProUGUI NextPlayer; // Use TextMeshProUGUI for UI text components
-
-    public int columns;
-    public int rows;
+    public TextMeshProUGUI NextPlayer;
+    private int columns;
+    private int rows;
+    private int inARowReq;
+    private Color[] playerColours;
+    private string[] playerNames;
     public GameObject columnPrefab;
     public GameObject baseRow;
     public GameObject baseCellPrefab;
     public GameObject leftBaseCellPrefab;
     public GameObject rightBaseCellPrefab;
-
-    //want to reer to cell in column 3 row 4 as grid[3][4], so put array of columns, and then the row order 
-
     private ColumnController[] columnGrid;
-
-
     private int nextPlayerTurn = 0;
-
-    private Color[] playerColours;
-
-    private string[] playerNames;
-
     private bool gameOver = false;
-
-    public int inARowReq;
     private bool waitingForPieceToLand = false;
 
 
@@ -57,64 +47,62 @@ public class GameBoardController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        checkForColumnSignals();
-        waitingForPieceToLand = getWaitingForStatuses();
-        setWaitingForStatuses();
+        checkForPiecesWhichNeedParentingAndColouring();
+        getWaitingForPieceToLand();
+        setWaitingForPieceToLand();
         setGameOverStatus();
 
     }
 
-    private void setGameOverStatus()
+    void setGameOverStatus()
     {
         for (int column = 0; column < columns; column++)
         {
-            columnGrid[column].gameOver = gameOver;
+            columnGrid[column].setGameOver(gameOver);
 
         }
     }
 
-    private bool getWaitingForStatuses()
+    void getWaitingForPieceToLand()
     {
 
         for (int column = 0; column < columns; column++)
         {
-            if (columnGrid[column].waitingForPieceToLand != waitingForPieceToLand)
+            if (columnGrid[column].getWaitingForPieceToLand() != waitingForPieceToLand)
             {
-                if (columnGrid[column].waitingForPieceToLand == false)
+                if (columnGrid[column].getWaitingForPieceToLand() == false)
                 {
                     //This runs when a piece in any column lands
                     GameWonCheck(1 - nextPlayerTurn);
                     // GameWonCheck(nextPlayerTurn);
                 }
-                return columnGrid[column].waitingForPieceToLand;
+                waitingForPieceToLand = columnGrid[column].getWaitingForPieceToLand();
+                break;
 
             }
 
         }
-        return waitingForPieceToLand;
 
     }
 
-    private void setWaitingForStatuses()
+    void setWaitingForPieceToLand()
     {
         for (int column = 0; column < columns; column++)
         {
-            columnGrid[column].waitingForPieceToLand = waitingForPieceToLand;
-            Debug.Log("Column: " + columnGrid[column].column + ", waitingForPieceToLand: " + columnGrid[column].waitingForPieceToLand);
+            columnGrid[column].setWaitingForPieceToLand(waitingForPieceToLand);
+            // Debug.Log("Column: " + columnGrid[column].column + ", waitingForPieceToLand: " + columnGrid[column].waitingForPieceToLand);
         }
 
 
     }
-    // Debug.Log("Game Waiting For Piece to Land: " + waitingForPieceToLand);
 
-
-    private void InstantiateBoard()
+    void InstantiateBoard()
     {
         InstantiateBaseRow();
         InstantiateColumns();
     }
 
-    private void InstantiateColumns()
+    void InstantiateColumns()
     {
         for (int columnNo = 0; columnNo < columns; columnNo++)
         {
@@ -125,7 +113,7 @@ public class GameBoardController : MonoBehaviour
         }
     }
 
-    private void InstantiateBaseRow()
+    void InstantiateBaseRow()
     {
         for (int columnNo = -1; columnNo < columns + 1; columnNo++)
         {
@@ -147,28 +135,26 @@ public class GameBoardController : MonoBehaviour
         }
     }
 
-
-
-    public void checkForColumnSignals()
+    void checkForPiecesWhichNeedParentingAndColouring()
     {
 
         for (int column = 0; column < columns; column++)
         {
             ColumnController columnController = columnGrid[column];
-            if (columnController.pieceNeedsToBeParentedAndColoured && columnController.unplacedPiece != null)
+            if (columnController.getPieceNeedsToBeParentedAndColoured() && columnController.getUnplacedPiece())
             {
-                PieceController piece = columnController.unplacedPiece;
+                PieceController piece = columnController.getUnplacedPiece();
                 piece.setColour(playerColours[nextPlayerTurn]);
                 piece.setBelongsTo(nextPlayerTurn);
-                columnController.pieceNeedsToBeParentedAndColoured = false;
+                columnController.setPieceNeedsToBeParentedAndColoured(false);
 
             }
 
-            if (!GameWonCheck(nextPlayerTurn) && columnController.turnNeedsToBeSwitched)
+            if (!GameWonCheck(nextPlayerTurn) && columnController.getTurnNeedsToBeSwitched())
             {
                 nextPlayerTurn = 1 - nextPlayerTurn;
                 NextPlayer.text = "It's your turn,\n" + playerNames[nextPlayerTurn];
-                columnController.turnNeedsToBeSwitched = false;
+                columnController.setTurnNeedsToBeSwitched(false);
 
             }
 
@@ -176,7 +162,7 @@ public class GameBoardController : MonoBehaviour
 
     }
 
-    public bool GameWonCheck(int playerNo)
+    bool GameWonCheck(int playerNo)
     {
 
         if (checkWinner(playerNo))
@@ -191,7 +177,7 @@ public class GameBoardController : MonoBehaviour
 
     }
 
-    public bool checkWinner(int playerNo)
+    bool checkWinner(int playerNo)
     {
 
 
@@ -378,9 +364,7 @@ public class GameBoardController : MonoBehaviour
         return false;
     }
 
-
-
-    public void Log2DArray(int[,] array)
+    void Log2DArray(int[,] array)
 
     {
         int rows = array.GetLength(0);
@@ -400,7 +384,7 @@ public class GameBoardController : MonoBehaviour
         Debug.Log(logMessage);
     }
 
-    public void colourWinningPieces(int[,] cells, int inARowReq)
+    void colourWinningPieces(int[,] cells, int inARowReq)
     {
 
         for (int i = 0; i < inARowReq; i++)

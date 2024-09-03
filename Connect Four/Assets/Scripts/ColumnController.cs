@@ -8,38 +8,26 @@ using UnityEngine.UI;
 public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
 
-    public CellController[] cellGrid;
-    public PieceController unplacedPiece;
-    public GameObject cellPrefab;
-    public GameObject piecePrefab;
-    public int rows;
-    public int column;
-    public int bottomCellIndex = 0;
-    public bool pieceNeedsToBeParentedAndColoured = false;
-    public bool waitingForPieceToLand = false;
-    public bool gameOver = false;
-    public bool hovering = false;
-    public bool turnNeedsToBeSwitched = false;
+    private CellController[] cellGrid;
+    private PieceController unplacedPiece;
+    private GameObject cellPrefab;
+    private GameObject piecePrefab;
+    private int rows;
+    private int column;
+    private int bottomCellIndex = 0;
+    private bool pieceNeedsToBeParentedAndColoured = false;
+    private bool waitingForPieceToLand = false;
+    private bool gameOver = false;
+    private bool hovering = false;
+    private bool turnNeedsToBeSwitched = false;
 
-    public void InstantiateCells()
+    void InstantiateCells()
     {
         // Debug.Log("Column created");
         for (int cellRowNo = 0; cellRowNo < rows; cellRowNo++)
         {
             cellGrid[cellRowNo] = Instantiate(cellPrefab, transform).GetComponent<CellController>();
         }
-    }
-
-    public void setRows(int rows)
-    {
-        this.rows = rows;
-        cellGrid = new CellController[rows];
-        InstantiateCells();
-    }
-
-    public void setColumn(int column)
-    {
-        this.column = column;
     }
 
     public void OnPointerDown(PointerEventData pointer)
@@ -62,9 +50,9 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         createPiece();
     }
 
-    public void createPiece()
+    void createPiece()
     {
-        Debug.Log("waitingForPieceToLand " + waitingForPieceToLand);
+        // Debug.Log("waitingForPieceToLand " + waitingForPieceToLand);
         if (!waitingForPieceToLand && !gameOver)
         {
             unplacedPiece = Instantiate(piecePrefab, transform.position + new Vector3(0, 5, 0), Quaternion.identity, transform).GetComponent<PieceController>();
@@ -72,9 +60,6 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         }
     }
 
-
-
-    // Called when the pointer exits the UI element or GameObject
     public void OnPointerExit(PointerEventData eventData)
     {
         hovering = false;
@@ -82,7 +67,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     }
 
-    public void DestroyPiece()
+    void DestroyPiece()
     {
         if (unplacedPiece != null && !waitingForPieceToLand)
         {
@@ -91,8 +76,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         }
     }
 
-
-    public void Update()
+    void Update()
     {
         if (waitingForPieceToLand && unplacedPiece != null)
         {
@@ -118,15 +102,66 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         }
     }
 
-    public CellController getBottomCell()
+    CellController getBottomCell()
     {
         return cellGrid[bottomCellIndex];
+    }
+
+    public void setGameOver(bool gameOver)
+    {
+        this.gameOver = gameOver;
+    }
+
+    public bool getWaitingForPieceToLand()
+    {
+        return waitingForPieceToLand;
+    }
+
+    public void setWaitingForPieceToLand(bool waitingForPieceToLand)
+    {
+        this.waitingForPieceToLand = waitingForPieceToLand;
+    }
+
+    public bool getPieceNeedsToBeParentedAndColoured()
+    {
+        return pieceNeedsToBeParentedAndColoured;
+    }
+
+    public void setPieceNeedsToBeParentedAndColoured(bool pieceNeedsToBeParentedAndColoured)
+    {
+        this.pieceNeedsToBeParentedAndColoured = pieceNeedsToBeParentedAndColoured;
+    }
+
+    public PieceController getUnplacedPiece()
+    {
+        return unplacedPiece;
+    }
+
+    public bool getTurnNeedsToBeSwitched()
+    {
+        return turnNeedsToBeSwitched;
+    }
+
+    public void setTurnNeedsToBeSwitched(bool turnNeedsToBeSwitched)
+    {
+        this.turnNeedsToBeSwitched = turnNeedsToBeSwitched;
+    }
+
+    public void setRows(int rows)
+    {
+        this.rows = rows;
+        cellGrid = new CellController[rows];
+        InstantiateCells();
+    }
+
+    public void setColumn(int column)
+    {
+        this.column = column;
     }
 
     public CellController getCellAtRow(int row)
     {
         return cellGrid[row];
     }
-
 
 }

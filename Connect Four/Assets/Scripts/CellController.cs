@@ -13,7 +13,7 @@ public class CellController : MonoBehaviour
     private PieceController piece;
     private BoxCollider2D boxCollider;
 
-    public void Start()
+    void Start()
     {
         // Debug.Log("Cell created");
         boxCollider = GetComponent<BoxCollider2D>();

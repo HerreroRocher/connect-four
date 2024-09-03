@@ -19,13 +19,15 @@ public class PieceController : MonoBehaviour
     private bool canvasSwitched = false;
     private int belongsTo;
 
-    public void Start()
+    void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         if (rigidbody == null)
         {
             Debug.LogError("Rigidbody2D component is missing from this GameObject!");
-        } else {
+        }
+        else
+        {
             // Debug.Log("Rigidbody initialised");
         }
         backgroundAndPiecesCanvas = GameObject.FindGameObjectWithTag("Background and Pieces Canvas");
@@ -33,7 +35,7 @@ public class PieceController : MonoBehaviour
         startPosition = transform.position;
     }
 
-    public void switchCanvas()
+    void switchCanvas()
     {
 
         if (backgroundAndPiecesCanvas != null)
@@ -68,6 +70,7 @@ public class PieceController : MonoBehaviour
     {
         return stoppedMoving;
     }
+
     void SetPieceCoordinates(Vector3 coordinates)
     {
         this.transform.position = coordinates;
@@ -117,6 +120,7 @@ public class PieceController : MonoBehaviour
     {
         return belongsTo;
     }
+
     public void setDynamic()
     {
         // Debug.Log(rigidbody);
