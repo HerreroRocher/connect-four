@@ -5,30 +5,28 @@ using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
-    public string[] players;
-    public Color[] colors;
-    public int rows;
-    public int columns;
-    public int inARowRequirements;
-
-    public TMP_InputField player1NameIF;
-    public TMP_InputField player2NameIF;
-    public TMP_InputField rowsReq;
-    public TMP_InputField columnsReq;
-    public TMP_InputField connectReq;
-
-    public FlexibleColorPicker colorPickerPlayer1;
-    public FlexibleColorPicker colorPickerPlayer2;
+    private string[] players;
+    private Color[] colors;
+    private int rows;
+    private int columns;
+    private int inARowRequirements;
+    public TMP_InputField Player1NameInputField;
+    public TMP_InputField Player2NameInputField;
+    public TMP_InputField RowsRequirementInputField;
+    public TMP_InputField ColumnsRequirementInputField;
+    public TMP_InputField InARowRequirementInputField;
+    public FlexibleColorPicker Player1ColorPicker;
+    public FlexibleColorPicker Player2ColorPicker;
 
 
     // This method is called when the button is clicked
     public void OnPlayButtonClicked()
     {
-        players = new string[] { (player1NameIF.text != "" ? player1NameIF.text : "Daniel"), (player2NameIF.text != "" ? player2NameIF.text : "Natasja") };
-        rows = rowsReq != null ? (int.TryParse(rowsReq.text, out rows) ? rows : 7) : 7;
-        columns = columnsReq != null ? (int.TryParse(columnsReq.text, out columns) ? columns : 7) : 7;
-        inARowRequirements = connectReq != null ? (int.TryParse(connectReq.text, out inARowRequirements) ? inARowRequirements : 4) : 4;
-        colors = new Color[] { colorPickerPlayer1.color, colorPickerPlayer2.color };
+        players = new string[] { (Player1NameInputField.text != "" ? Player1NameInputField.text : "Daniel"), (Player2NameInputField.text != "" ? Player2NameInputField.text : "Natasja") };
+        rows = RowsRequirementInputField != null ? (int.TryParse(RowsRequirementInputField.text, out rows) ? rows : 7) : 7;
+        columns = ColumnsRequirementInputField != null ? (int.TryParse(ColumnsRequirementInputField.text, out columns) ? columns : 7) : 7;
+        inARowRequirements = InARowRequirementInputField != null ? (int.TryParse(InARowRequirementInputField.text, out inARowRequirements) ? inARowRequirements : 4) : 4;
+        colors = new Color[] { Player1ColorPicker.color, Player2ColorPicker.color };
 
         // Debug.Log(colorPickerPlayer1.color.GetType());
         // Debug.Log(colorPickerPlayer2.color.GetType());
@@ -42,10 +40,10 @@ public class MainMenuController : MonoBehaviour
 
     public void setGameData()
     {
-        GameData.players = this.players;
-        GameData.colors = this.colors;
-        GameData.rows = this.rows;
-        GameData.columns = this.columns;
-        GameData.inARowRequirements = this.inARowRequirements;
+        GameData.Players = this.players;
+        GameData.Colors = this.colors;
+        GameData.Rows = this.rows;
+        GameData.Columns = this.columns;
+        GameData.InARowRequirements = this.inARowRequirements;
     }
 }
