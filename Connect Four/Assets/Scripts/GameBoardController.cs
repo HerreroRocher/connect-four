@@ -58,7 +58,7 @@ public class GameBoardController : MonoBehaviour
     void Update()
     {
         checkForColumnSignals();
-        getWaitingForStatuses();
+        waitingForPieceToLand = getWaitingForStatuses();
         setWaitingForStatuses();
         setGameOverStatus();
 
@@ -73,27 +73,25 @@ public class GameBoardController : MonoBehaviour
         }
     }
 
-    private void getWaitingForStatuses()
+    private bool getWaitingForStatuses()
     {
 
         for (int column = 0; column < columns; column++)
         {
-            if (columnGrid[column].thisColumnWaitingForPieceToLand != waitingForPieceToLand)
+            if (columnGrid[column].waitingForPieceToLand != waitingForPieceToLand)
             {
-                if (columnGrid[column].thisColumnWaitingForPieceToLand == false)
+                if (columnGrid[column].waitingForPieceToLand == false)
                 {
                     //This runs when a piece in any column lands
                     GameWonCheck(1 - nextPlayerTurn);
-                    waitingForPieceToLand = false;
-
                     // GameWonCheck(nextPlayerTurn);
                 }
-                else{
-                    //This runs when a piece in any column starts falling
-                    waitingForPieceToLand = true;
-                }
+                return columnGrid[column].waitingForPieceToLand;
+
             }
+
         }
+        return waitingForPieceToLand;
 
     }
 
@@ -101,13 +99,14 @@ public class GameBoardController : MonoBehaviour
     {
         for (int column = 0; column < columns; column++)
         {
-            if (columnGrid[column].thisColumnWaitingForPieceToLand != waitingForPieceToLand){
-                columnGrid[column].anotherColumnWaitingForPieceToLand = waitingForPieceToLand;
-            } 
-            
-
+            columnGrid[column].waitingForPieceToLand = waitingForPieceToLand;
+            Debug.Log("Column: " + columnGrid[column].column + ", waitingForPieceToLand: " + columnGrid[column].waitingForPieceToLand);
         }
+
+
     }
+    // Debug.Log("Game Waiting For Piece to Land: " + waitingForPieceToLand);
+
 
     private void InstantiateBoard()
     {
@@ -156,7 +155,7 @@ public class GameBoardController : MonoBehaviour
         for (int column = 0; column < columns; column++)
         {
             ColumnController columnController = columnGrid[column];
-            if (columnController.pieceNeedsToBeParentedAndColoured)
+            if (columnController.pieceNeedsToBeParentedAndColoured && columnController.unplacedPiece != null)
             {
                 PieceController piece = columnController.unplacedPiece;
                 piece.setColour(playerColours[nextPlayerTurn]);

@@ -8,16 +8,15 @@ using UnityEngine.UI;
 public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
 
-    private CellController[] cellGrid;
+    public CellController[] cellGrid;
     public PieceController unplacedPiece;
     public GameObject cellPrefab;
     public GameObject piecePrefab;
-    private int rows;
-    private int column;
-    private int bottomCellIndex = 0;
+    public int rows;
+    public int column;
+    public int bottomCellIndex = 0;
     public bool pieceNeedsToBeParentedAndColoured = false;
-    public bool thisColumnWaitingForPieceToLand = false;
-    public bool anotherColumnWaitingForPieceToLand = false;
+    public bool waitingForPieceToLand = false;
     public bool gameOver = false;
     public bool hovering = false;
     public bool turnNeedsToBeSwitched = false;
@@ -51,7 +50,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         {
             unplacedPiece.setParent(cellGrid[bottomCellIndex].gameObject);
             unplacedPiece.setDynamic();
-            thisColumnWaitingForPieceToLand = true;
+            waitingForPieceToLand = true;
             turnNeedsToBeSwitched = true;
         }
 
@@ -65,7 +64,8 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     public void createPiece()
     {
-        if (!thisColumnWaitingForPieceToLand && !anotherColumnWaitingForPieceToLand && !gameOver)
+        Debug.Log("waitingForPieceToLand " + waitingForPieceToLand);
+        if (!waitingForPieceToLand && !gameOver)
         {
             unplacedPiece = Instantiate(piecePrefab, transform.position + new Vector3(0, 5, 0), Quaternion.identity, transform).GetComponent<PieceController>();
             pieceNeedsToBeParentedAndColoured = true;
@@ -78,7 +78,13 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     public void OnPointerExit(PointerEventData eventData)
     {
         hovering = false;
-        if (unplacedPiece != null && !thisColumnWaitingForPieceToLand)
+        DestroyPiece();
+
+    }
+
+    public void DestroyPiece()
+    {
+        if (unplacedPiece != null && !waitingForPieceToLand)
         {
             Destroy(unplacedPiece.gameObject);
             unplacedPiece = null;
@@ -88,7 +94,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     public void Update()
     {
-        if (thisColumnWaitingForPieceToLand)
+        if (waitingForPieceToLand && unplacedPiece != null)
         {
 
             if (unplacedPiece.getStoppedMoving())
@@ -96,17 +102,20 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
                 getBottomCell().setPiece(unplacedPiece);
                 unplacedPiece = null;
                 bottomCellIndex += 1;
-                thisColumnWaitingForPieceToLand = false;
-                if (hovering)
-                {
-                    createPiece();
-                }
+                waitingForPieceToLand = false;
+
 
             }
 
         }
-
-
+        if (hovering && !waitingForPieceToLand && unplacedPiece == null)
+        {
+            createPiece();
+        }
+        if (gameOver && unplacedPiece != null)
+        {
+            DestroyPiece();
+        }
     }
 
     public CellController getBottomCell()
