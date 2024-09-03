@@ -16,19 +16,19 @@ public class CellController : MonoBehaviour
     void Start()
     {
         // Debug.Log("Cell created");
-        boxCollider = GetComponent<BoxCollider2D>();
+        _boxCollider = GetComponent<BoxCollider2D>();
 
     }
 
     public void SetPiece(PieceController piece)
     {
-        this.piece = piece;
+        this._piece = piece;
         _isOccupied = true;
     }
 
     public PieceController GetPiece()
     {
-        return piece;
+        return _piece;
     }
 
     public bool GetIsOccupied()
@@ -39,7 +39,7 @@ public class CellController : MonoBehaviour
 
     public void SetWon()
     {
-        piece.SetColor(new Color(0, 0.5f, 0, 1));
+        _piece.SetColor(new Color(0, 0.5f, 0, 1));
     }
 
 

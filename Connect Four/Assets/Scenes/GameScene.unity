@@ -793,15 +793,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d001b44dc3435804e912493fd65e5eae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NextPlayer: {fileID: 431921371}
-  columns: 7
-  rows: 7
-  columnPrefab: {fileID: 8237143448087638575, guid: 7d292303bb13a39429855244dfea4330, type: 3}
-  baseRow: {fileID: 1335967216}
-  baseCellPrefab: {fileID: 6504955925120179165, guid: 6112e940c9a7a404aaaffb06cc7802f3, type: 3}
-  leftBaseCellPrefab: {fileID: 2561981694405490021, guid: 9740290c912407849861e2ee66aedfca, type: 3}
-  rightBaseCellPrefab: {fileID: 7801368913144840723, guid: cdcf37a594a07cb49a0dec740953f76a, type: 3}
-  inARowReq: 4
+  NextPlayerText: {fileID: 431921371}
+  ColumnPrefab: {fileID: 8237143448087638575, guid: 7d292303bb13a39429855244dfea4330, type: 3}
+  BaseRow: {fileID: 1335967216}
+  BaseCellPrefab: {fileID: 6504955925120179165, guid: 6112e940c9a7a404aaaffb06cc7802f3, type: 3}
+  LeftBaseCellPrefab: {fileID: 2561981694405490021, guid: 9740290c912407849861e2ee66aedfca, type: 3}
+  RightBaseCellPrefab: {fileID: 7801368913144840723, guid: cdcf37a594a07cb49a0dec740953f76a, type: 3}
 --- !u!1 &742583419
 GameObject:
   m_ObjectHideFlags: 0
