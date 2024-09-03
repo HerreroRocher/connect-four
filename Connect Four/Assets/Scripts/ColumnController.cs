@@ -7,26 +7,25 @@ using UnityEngine.UI;
 
 public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
-
-    private CellController[] cellGrid;
-    private PieceController unplacedPiece;
-    private GameObject cellPrefab;
-    private GameObject piecePrefab;
-    private int rows;
-    private int column;
-    private int bottomCellIndex = 0;
-    private bool pieceNeedsToBeParentedAndColoured = false;
-    private bool waitingForPieceToLand = false;
-    private bool gameOver = false;
-    private bool hovering = false;
-    private bool turnNeedsToBeSwitched = false;
+    public GameObject CellPrefab;
+    public GameObject PiecePrefab;
+    private CellController[] _cellGrid;
+    private PieceController _unplacedPiece;
+    private int _rows;
+    private int _column;
+    private int _bottomCellIndex = 0;
+    private bool _pieceNeedsParentingAndColoring = false;
+    private bool _isWaitingForPieceToLand = false;
+    private bool _isGameOver = false;
+    private bool _isHovering = false;
+    private bool _shouldSwitchTurn = false;
 
     void InstantiateCells()
     {
         // Debug.Log("Column created");
-        for (int cellRowNo = 0; cellRowNo < rows; cellRowNo++)
+        for (int cellRowNo = 0; cellRowNo < _rows; cellRowNo++)
         {
-            cellGrid[cellRowNo] = Instantiate(cellPrefab, transform).GetComponent<CellController>();
+            _cellGrid[cellRowNo] = Instantiate(CellPrefab, transform).GetComponent<CellController>();
         }
     }
 
@@ -34,69 +33,69 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     {
         // Debug.Log("Cell clicked");
         // Debug.Log("Clicked on cell in column " + column);
-        if (unplacedPiece != null && !gameOver)
+        if (_unplacedPiece != null && !_isGameOver)
         {
-            unplacedPiece.SetParent(cellGrid[bottomCellIndex].gameObject);
-            unplacedPiece.SetDynamic();
-            waitingForPieceToLand = true;
-            turnNeedsToBeSwitched = true;
+            _unplacedPiece.SetParent(_cellGrid[_bottomCellIndex].gameObject);
+            _unplacedPiece.SetDynamic();
+            _isWaitingForPieceToLand = true;
+            _shouldSwitchTurn = true;
         }
 
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        hovering = true;
+        _isHovering = true;
         CreatePiece();
     }
 
     void CreatePiece()
     {
-        // Debug.Log("waitingForPieceToLand " + waitingForPieceToLand);
-        if (!waitingForPieceToLand && !gameOver)
+        // Debug.Log("isWaitingForPieceToLand " + isWaitingForPieceToLand);
+        if (!_isWaitingForPieceToLand && !_isGameOver)
         {
-            unplacedPiece = Instantiate(piecePrefab, transform.position + new Vector3(0, 5, 0), Quaternion.identity, transform).GetComponent<PieceController>();
-            pieceNeedsToBeParentedAndColoured = true;
+            _unplacedPiece = Instantiate(PiecePrefab, transform.position + new Vector3(0, 5, 0), Quaternion.identity, transform).GetComponent<PieceController>();
+            _pieceNeedsParentingAndColoring = true;
         }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        hovering = false;
+        _isHovering = false;
         DestroyPiece();
 
     }
 
     void DestroyPiece()
     {
-        if (unplacedPiece != null && !waitingForPieceToLand)
+        if (_unplacedPiece != null && !_isWaitingForPieceToLand)
         {
-            Destroy(unplacedPiece.gameObject);
-            unplacedPiece = null;
+            Destroy(_unplacedPiece.gameObject);
+            _unplacedPiece = null;
         }
     }
 
     void Update()
     {
-        if (waitingForPieceToLand && unplacedPiece != null)
+        if (_isWaitingForPieceToLand && _unplacedPiece != null)
         {
 
-            if (unplacedPiece.GetStoppedMoving())
+            if (_unplacedPiece.GetHasStoppedMoving())
             {
-                GetBottomCell().SetPiece(unplacedPiece);
-                unplacedPiece = null;
-                bottomCellIndex += 1;
-                waitingForPieceToLand = false;
+                GetBottomCell().SetPiece(_unplacedPiece);
+                _unplacedPiece = null;
+                _bottomCellIndex += 1;
+                _isWaitingForPieceToLand = false;
 
 
             }
 
         }
-        if (hovering && !waitingForPieceToLand && unplacedPiece == null)
+        if (_isHovering && !_isWaitingForPieceToLand && _unplacedPiece == null)
         {
             CreatePiece();
         }
-        if (gameOver && unplacedPiece != null)
+        if (_isGameOver && _unplacedPiece != null)
         {
             DestroyPiece();
         }
@@ -104,64 +103,64 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     CellController GetBottomCell()
     {
-        return cellGrid[bottomCellIndex];
+        return _cellGrid[_bottomCellIndex];
     }
 
-    public void SetGameOver(bool gameOver)
+    public void SetIsGameOver(bool isGameOver)
     {
-        this.gameOver = gameOver;
+        this._isGameOver = isGameOver;
     }
 
-    public bool GetWaitingForPieceToLand()
+    public bool GetIsWaitingForPieceToLand()
     {
-        return waitingForPieceToLand;
+        return _isWaitingForPieceToLand;
     }
 
-    public void SetWaitingForPieceToLand(bool waitingForPieceToLand)
+    public void SetIsWaitingForPieceToLand(bool isWaitingForPieceToLand)
     {
-        this.waitingForPieceToLand = waitingForPieceToLand;
+        this._isWaitingForPieceToLand = isWaitingForPieceToLand;
     }
 
-    public bool GetPieceNeedsToBeParentedAndColoured()
+    public bool GetPieceNeedsParentingAndColoring()
     {
-        return pieceNeedsToBeParentedAndColoured;
+        return _pieceNeedsParentingAndColoring;
     }
 
-    public void SetPieceNeedsToBeParentedAndColoured(bool pieceNeedsToBeParentedAndColoured)
+    public void SetPieceNeedsParentingAndColoring(bool pieceNeedsParentingAndColoring)
     {
-        this.pieceNeedsToBeParentedAndColoured = pieceNeedsToBeParentedAndColoured;
+        this._pieceNeedsParentingAndColoring = pieceNeedsParentingAndColoring;
     }
 
     public PieceController GetUnplacedPiece()
     {
-        return unplacedPiece;
+        return _unplacedPiece;
     }
 
-    public bool GetTurnNeedsToBeSwitched()
+    public bool GetShouldSwitchTurn()
     {
-        return turnNeedsToBeSwitched;
+        return _shouldSwitchTurn;
     }
 
-    public void SetTurnNeedsToBeSwitched(bool turnNeedsToBeSwitched)
+    public void SetShouldSwitchTurn(bool shouldSwitchTurn)
     {
-        this.turnNeedsToBeSwitched = turnNeedsToBeSwitched;
+        this._shouldSwitchTurn = shouldSwitchTurn;
     }
 
     public void SetRows(int rows)
     {
-        this.rows = rows;
-        cellGrid = new CellController[rows];
+        this._rows = rows;
+        _cellGrid = new CellController[rows];
         InstantiateCells();
     }
 
     public void SetColumn(int column)
     {
-        this.column = column;
+        this._column = column;
     }
 
     public CellController GetCellAtRow(int row)
     {
-        return cellGrid[row];
+        return _cellGrid[row];
     }
 
 }

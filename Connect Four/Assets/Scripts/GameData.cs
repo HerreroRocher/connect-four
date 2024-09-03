@@ -1,9 +1,9 @@
 using UnityEngine;
 public static class GameData
 {
-    public static string[] players = new string[] { "Daniel", "Natasja" };
-    public static Color[] colours = new Color[] { Color.red, Color.yellow };
-    public static int rows = 7;
-    public static int columns = 7;
-    public static int inARowRequirements = 4;
+    public static string[] Players = new string[] { "Daniel", "Natasja" };
+    public static Color[] Colors = new Color[] { Color.red, Color.yellow };
+    public static int Rows = 7;
+    public static int Columns = 7;
+    public static int InARowRequirements = 4;
 }

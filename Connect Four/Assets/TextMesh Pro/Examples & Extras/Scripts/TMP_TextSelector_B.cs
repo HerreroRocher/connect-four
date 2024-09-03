@@ -25,7 +25,7 @@ namespace TMPro.Examples
         private Camera m_Camera;
 
         // Flags
-        private bool isHoveringObject;
+        private bool isIsisHoveringObject;
         private int m_selectedWord = -1;
         private int m_selectedLink = -1;
         private int m_lastIndex = -1;
@@ -80,7 +80,7 @@ namespace TMPro.Examples
 
         void LateUpdate()
         {
-            if (isHoveringObject)
+            if (isIsisHoveringObject)
             {
                 // Check if Mouse Intersects any of the characters. If so, assign a random color.
                 #region Handle Character Selection
@@ -293,14 +293,14 @@ namespace TMPro.Examples
         public void OnPointerEnter(PointerEventData eventData)
         {
             //Debug.Log("OnPointerEnter()");
-            isHoveringObject = true;
+            isIsisHoveringObject = true;
         }
 
 
         public void OnPointerExit(PointerEventData eventData)
         {
             //Debug.Log("OnPointerExit()");
-            isHoveringObject = false;
+            isIsisHoveringObject = false;
         }
 
 

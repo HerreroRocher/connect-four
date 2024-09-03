@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class MainMenuController : MonoBehaviour
 {
     public string[] players;
-    public Color[] colours;
+    public Color[] colors;
     public int rows;
     public int columns;
     public int inARowRequirements;
@@ -26,9 +26,9 @@ public class MainMenuController : MonoBehaviour
     {
         players = new string[] { (player1NameIF.text != "" ? player1NameIF.text : "Daniel"), (player2NameIF.text != "" ? player2NameIF.text : "Natasja") };
         rows = rowsReq != null ? (int.TryParse(rowsReq.text, out rows) ? rows : 7) : 7;
-        columns = columnsReq != null ?(int.TryParse(columnsReq.text, out columns) ? columns : 7) : 7;
+        columns = columnsReq != null ? (int.TryParse(columnsReq.text, out columns) ? columns : 7) : 7;
         inARowRequirements = connectReq != null ? (int.TryParse(connectReq.text, out inARowRequirements) ? inARowRequirements : 4) : 4;
-        colours = new Color[] { colorPickerPlayer1.color, colorPickerPlayer2.color };
+        colors = new Color[] { colorPickerPlayer1.color, colorPickerPlayer2.color };
 
         // Debug.Log(colorPickerPlayer1.color.GetType());
         // Debug.Log(colorPickerPlayer2.color.GetType());
@@ -43,7 +43,7 @@ public class MainMenuController : MonoBehaviour
     public void setGameData()
     {
         GameData.players = this.players;
-        GameData.colours = this.colours;
+        GameData.colors = this.colors;
         GameData.rows = this.rows;
         GameData.columns = this.columns;
         GameData.inARowRequirements = this.inARowRequirements;

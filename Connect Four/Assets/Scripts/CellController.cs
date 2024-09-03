@@ -9,9 +9,9 @@ public class CellController : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    private bool occupied = false;
-    private PieceController piece;
-    private BoxCollider2D boxCollider;
+    private bool _isOccupied = false;
+    private PieceController _piece;
+    private BoxCollider2D _boxCollider;
 
     void Start()
     {
@@ -23,7 +23,7 @@ public class CellController : MonoBehaviour
     public void SetPiece(PieceController piece)
     {
         this.piece = piece;
-        occupied = true;
+        _isOccupied = true;
     }
 
     public PieceController GetPiece()
@@ -31,15 +31,15 @@ public class CellController : MonoBehaviour
         return piece;
     }
 
-    public bool GetOccupied()
+    public bool GetIsOccupied()
     {
-        return occupied;
+        return _isOccupied;
     }
 
 
     public void SetWon()
     {
-        piece.SetColour(new Color(0, 0.5f, 0, 1));
+        piece.SetColor(new Color(0, 0.5f, 0, 1));
     }
 
 

@@ -8,21 +8,21 @@ using UnityEngine.UI;
 public class PieceController : MonoBehaviour
 {
 
-    private Rigidbody2D rigidbody;
-    private bool stoppedMoving;
-    private GameObject parent;
-    private Vector3 parentCoordinates;
-    public GameObject backgroundAndPiecesCanvas;
-    private bool parentSet = false;
-    private Vector3 startPosition;
-    private Vector3 spawnPosition;
-    private bool canvasSwitched = false;
-    private int belongsTo;
+    public GameObject BackgroundAndPiecesCanvas;
+    private Rigidbody2D _rigidbody;
+    private bool _hasStoppedMoving;
+    private GameObject _parent;
+    private Vector3 _parentCoordinates;
+    private bool _isParentSet = false;
+    private Vector3 _startPosition;
+    private Vector3 _spawnPosition;
+    private bool _isCanvasSwitched = false;
+    private int _belongsTo;
 
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
-        if (rigidbody == null)
+        _rigidbody = GetComponent<Rigidbody2D>();
+        if (_rigidbody == null)
         {
             Debug.LogError("Rigidbody2D component is missing from this GameObject!");
         }
@@ -30,17 +30,17 @@ public class PieceController : MonoBehaviour
         {
             // Debug.Log("Rigidbody initialised");
         }
-        backgroundAndPiecesCanvas = GameObject.FindGameObjectWithTag("Background and Pieces Canvas");
+        BackgroundAndPiecesCanvas = GameObject.FindGameObjectWithTag("Background and Pieces Canvas");
 
-        startPosition = transform.position;
+        _startPosition = transform.position;
     }
 
     void switchCanvas()
     {
 
-        if (backgroundAndPiecesCanvas != null)
+        if (BackgroundAndPiecesCanvas != null)
         {
-            this.transform.SetParent(backgroundAndPiecesCanvas.transform, false);
+            this.transform.SetParent(BackgroundAndPiecesCanvas.transform, false);
             gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(105, 105);
 
 
@@ -50,13 +50,13 @@ public class PieceController : MonoBehaviour
     void StopPiece()
     {
         // Debug.Log("Collision detected");
-        rigidbody.velocity = Vector2.zero;
-        rigidbody.gravityScale = 0;
-        rigidbody.angularVelocity = 0;
-        rigidbody.angularDrag = 0;
-        rigidbody.isKinematic = true; // Optional
-        stoppedMoving = true;
-        SetPieceCoordinates(parentCoordinates);
+        _rigidbody.velocity = Vector2.zero;
+        _rigidbody.gravityScale = 0;
+        _rigidbody.angularVelocity = 0;
+        _rigidbody.angularDrag = 0;
+        _rigidbody.isKinematic = true; // Optional
+        _hasStoppedMoving = true;
+        SetPieceCoordinates(_parentCoordinates);
     }
 
     void SetPieceCoordinates(Vector3 coordinates)
@@ -67,65 +67,65 @@ public class PieceController : MonoBehaviour
     void Update()
     {
         // Debug.Log(transform.position);
-        if (parentSet)
+        if (_isParentSet)
         {
             // Debug.Log("this.transform.position: " + this.transform.position);
             // Debug.Log("parentCoordinates " + parentCoordinates);
             // Debug.Log("rigidbody.velocity " + rigidbody.velocity);
             // Debug.Log("Vector2.zero " + Vector2.zero);
-            if (this.transform.position.y <= parentCoordinates.y && rigidbody.velocity != Vector2.zero)
+            if (this.transform.position.y <= _parentCoordinates.y && _rigidbody.velocity != Vector2.zero)
             {
                 StopPiece();
             }
         }
 
 
-        if (startPosition != null)
+        if (_startPosition != null)
         {
-            if (!canvasSwitched)
+            if (!_isCanvasSwitched)
             {
-                if (transform.position != startPosition)
+                if (transform.position != _startPosition)
                 {
-                    spawnPosition = transform.position;
+                    _spawnPosition = transform.position;
                     switchCanvas();
-                    transform.position = spawnPosition;
+                    transform.position = _spawnPosition;
                 }
             }
         }
     }
 
-    public void SetColour(Color colour)
+    public void SetColor(Color color)
     {
-        this.GetComponent<Image>().color = colour;
+        this.GetComponent<Image>().color = color;
     }
 
     public void SetBelongsTo(int belongsTo)
     {
-        this.belongsTo = belongsTo;
+        this._belongsTo = belongsTo;
     }
 
     public int GetBelongsTo()
     {
-        return belongsTo;
+        return _belongsTo;
     }
 
     public void SetDynamic()
     {
         // Debug.Log(rigidbody);
         // Debug.Log(rigidbody == null);
-        rigidbody.bodyType = RigidbodyType2D.Dynamic;
+        _rigidbody.bodyType = RigidbodyType2D.Dynamic;
     }
 
     public void SetParent(GameObject parent)
     {
-        parentSet = true;
-        this.parent = parent;
-        parentCoordinates = parent.transform.position;
+        _isParentSet = true;
+        this._parent = parent;
+        _parentCoordinates = parent.transform.position;
     }
 
-    public bool GetStoppedMoving()
+    public bool GetHasStoppedMoving()
     {
-        return stoppedMoving;
+        return _hasStoppedMoving;
     }
 
 }

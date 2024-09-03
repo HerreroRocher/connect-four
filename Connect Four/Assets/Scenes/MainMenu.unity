@@ -243,7 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players: []
-  colours: []
+  colors: []
   rows: 0
   columns: 0
   inARowRequirements: 0
