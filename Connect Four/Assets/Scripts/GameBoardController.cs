@@ -47,36 +47,36 @@ public class GameBoardController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        checkForPiecesWhichNeedParentingAndColouring();
-        getWaitingForPieceToLand();
-        setWaitingForPieceToLand();
-        setGameOverStatus();
+        CheckForPiecesWhichNeedParentingAndColouring();
+        GetWaitingForPieceToLand();
+        SetWaitingForPieceToLand();
+        SetGameOverStatus();
 
     }
 
-    void setGameOverStatus()
+    void SetGameOverStatus()
     {
         for (int column = 0; column < columns; column++)
         {
-            columnGrid[column].setGameOver(gameOver);
+            columnGrid[column].SetGameOver(gameOver);
 
         }
     }
 
-    void getWaitingForPieceToLand()
+    void GetWaitingForPieceToLand()
     {
 
         for (int column = 0; column < columns; column++)
         {
-            if (columnGrid[column].getWaitingForPieceToLand() != waitingForPieceToLand)
+            if (columnGrid[column].GetWaitingForPieceToLand() != waitingForPieceToLand)
             {
-                if (columnGrid[column].getWaitingForPieceToLand() == false)
+                if (columnGrid[column].GetWaitingForPieceToLand() == false)
                 {
                     //This runs when a piece in any column lands
                     GameWonCheck(1 - nextPlayerTurn);
                     // GameWonCheck(nextPlayerTurn);
                 }
-                waitingForPieceToLand = columnGrid[column].getWaitingForPieceToLand();
+                waitingForPieceToLand = columnGrid[column].GetWaitingForPieceToLand();
                 break;
 
             }
@@ -85,11 +85,11 @@ public class GameBoardController : MonoBehaviour
 
     }
 
-    void setWaitingForPieceToLand()
+    void SetWaitingForPieceToLand()
     {
         for (int column = 0; column < columns; column++)
         {
-            columnGrid[column].setWaitingForPieceToLand(waitingForPieceToLand);
+            columnGrid[column].SetWaitingForPieceToLand(waitingForPieceToLand);
             // Debug.Log("Column: " + columnGrid[column].column + ", waitingForPieceToLand: " + columnGrid[column].waitingForPieceToLand);
         }
 
@@ -108,8 +108,8 @@ public class GameBoardController : MonoBehaviour
         {
             GameObject columnObj = Instantiate(columnPrefab, transform);
             columnGrid[columnNo] = columnObj.GetComponent<ColumnController>();
-            columnGrid[columnNo].setColumn(columnNo + 1);
-            columnGrid[columnNo].setRows(rows);
+            columnGrid[columnNo].SetColumn(columnNo + 1);
+            columnGrid[columnNo].SetRows(rows);
         }
     }
 
@@ -135,26 +135,26 @@ public class GameBoardController : MonoBehaviour
         }
     }
 
-    void checkForPiecesWhichNeedParentingAndColouring()
+    void CheckForPiecesWhichNeedParentingAndColouring()
     {
 
         for (int column = 0; column < columns; column++)
         {
             ColumnController columnController = columnGrid[column];
-            if (columnController.getPieceNeedsToBeParentedAndColoured() && columnController.getUnplacedPiece())
+            if (columnController.GetPieceNeedsToBeParentedAndColoured() && columnController.GetUnplacedPiece())
             {
-                PieceController piece = columnController.getUnplacedPiece();
-                piece.setColour(playerColours[nextPlayerTurn]);
-                piece.setBelongsTo(nextPlayerTurn);
-                columnController.setPieceNeedsToBeParentedAndColoured(false);
+                PieceController piece = columnController.GetUnplacedPiece();
+                piece.SetColour(playerColours[nextPlayerTurn]);
+                piece.SetBelongsTo(nextPlayerTurn);
+                columnController.SetPieceNeedsToBeParentedAndColoured(false);
 
             }
 
-            if (!GameWonCheck(nextPlayerTurn) && columnController.getTurnNeedsToBeSwitched())
+            if (!GameWonCheck(nextPlayerTurn) && columnController.GetTurnNeedsToBeSwitched())
             {
                 nextPlayerTurn = 1 - nextPlayerTurn;
                 NextPlayer.text = "It's your turn,\n" + playerNames[nextPlayerTurn];
-                columnController.setTurnNeedsToBeSwitched(false);
+                columnController.SetTurnNeedsToBeSwitched(false);
 
             }
 
@@ -165,7 +165,7 @@ public class GameBoardController : MonoBehaviour
     bool GameWonCheck(int playerNo)
     {
 
-        if (checkWinner(playerNo))
+        if (CheckWinner(playerNo))
         {
             // Debug.Log("WINNER");
             gameOver = true;
@@ -177,7 +177,7 @@ public class GameBoardController : MonoBehaviour
 
     }
 
-    bool checkWinner(int playerNo)
+    bool CheckWinner(int playerNo)
     {
 
 
@@ -188,13 +188,13 @@ public class GameBoardController : MonoBehaviour
         {
             for (int col = 0; col < columns; col++)
             {
-                CellController currentCellChecking = columnGrid[col].getCellAtRow(row);
+                CellController currentCellChecking = columnGrid[col].GetCellAtRow(row);
 
-                bool occupied = currentCellChecking.getOccupied();
+                bool occupied = currentCellChecking.GetOccupied();
 
                 if (occupied)
                 {
-                    if (currentCellChecking.getPiece().getBelongsTo() == playerNo)
+                    if (currentCellChecking.GetPiece().GetBelongsTo() == playerNo)
                     {
                         playerGrid[col, row] = 1;
 
@@ -308,7 +308,7 @@ public class GameBoardController : MonoBehaviour
                     }
 
                     // Log2DArray(cells);
-                    colourWinningPieces(cells, inARowReq);
+                    ColourWinningPieces(cells, inARowReq);
 
                     return true;
                 }
@@ -323,7 +323,7 @@ public class GameBoardController : MonoBehaviour
                     }
 
                     // Log2DArray(cells);
-                    colourWinningPieces(cells, inARowReq);
+                    ColourWinningPieces(cells, inARowReq);
                     return true;
                 }
                 else if (diagonalRightUpWin(col, row) == inARowReq)
@@ -337,7 +337,7 @@ public class GameBoardController : MonoBehaviour
                     }
 
                     // Log2DArray(cells);
-                    colourWinningPieces(cells, inARowReq);
+                    ColourWinningPieces(cells, inARowReq);
                     return true;
                 }
                 else if (rightwardsWin(col, row) == inARowReq)
@@ -351,7 +351,7 @@ public class GameBoardController : MonoBehaviour
                     }
 
                     // Log2DArray(cells);
-                    colourWinningPieces(cells, inARowReq);
+                    ColourWinningPieces(cells, inARowReq);
                     return true;
                 }
 
@@ -384,7 +384,7 @@ public class GameBoardController : MonoBehaviour
         Debug.Log(logMessage);
     }
 
-    void colourWinningPieces(int[,] cells, int inARowReq)
+    void ColourWinningPieces(int[,] cells, int inARowReq)
     {
 
         for (int i = 0; i < inARowReq; i++)
@@ -393,9 +393,9 @@ public class GameBoardController : MonoBehaviour
             int rowNo = cells[i, 1];
             // Debug.Log("Need to colour cell in column " + (colNo + 1) + " row " + (rowNo + 1));
 
-            CellController currentCellChecking = columnGrid[colNo].getCellAtRow(rowNo);
+            CellController currentCellChecking = columnGrid[colNo].GetCellAtRow(rowNo);
 
-            currentCellChecking.setWon();
+            currentCellChecking.SetWon();
 
 
         }

@@ -20,26 +20,26 @@ public class CellController : MonoBehaviour
 
     }
 
-    public void setPiece(PieceController piece)
+    public void SetPiece(PieceController piece)
     {
         this.piece = piece;
         occupied = true;
     }
 
-    public PieceController getPiece()
+    public PieceController GetPiece()
     {
         return piece;
     }
 
-    public bool getOccupied()
+    public bool GetOccupied()
     {
         return occupied;
     }
 
 
-    public void setWon()
+    public void SetWon()
     {
-        piece.setColour(new Color(0, 0.5f, 0, 1));
+        piece.SetColour(new Color(0, 0.5f, 0, 1));
     }
 
 

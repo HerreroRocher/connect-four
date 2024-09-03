@@ -36,8 +36,8 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         // Debug.Log("Clicked on cell in column " + column);
         if (unplacedPiece != null && !gameOver)
         {
-            unplacedPiece.setParent(cellGrid[bottomCellIndex].gameObject);
-            unplacedPiece.setDynamic();
+            unplacedPiece.SetParent(cellGrid[bottomCellIndex].gameObject);
+            unplacedPiece.SetDynamic();
             waitingForPieceToLand = true;
             turnNeedsToBeSwitched = true;
         }
@@ -47,10 +47,10 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     public void OnPointerEnter(PointerEventData eventData)
     {
         hovering = true;
-        createPiece();
+        CreatePiece();
     }
 
-    void createPiece()
+    void CreatePiece()
     {
         // Debug.Log("waitingForPieceToLand " + waitingForPieceToLand);
         if (!waitingForPieceToLand && !gameOver)
@@ -81,9 +81,9 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         if (waitingForPieceToLand && unplacedPiece != null)
         {
 
-            if (unplacedPiece.getStoppedMoving())
+            if (unplacedPiece.GetStoppedMoving())
             {
-                getBottomCell().setPiece(unplacedPiece);
+                GetBottomCell().SetPiece(unplacedPiece);
                 unplacedPiece = null;
                 bottomCellIndex += 1;
                 waitingForPieceToLand = false;
@@ -94,7 +94,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         }
         if (hovering && !waitingForPieceToLand && unplacedPiece == null)
         {
-            createPiece();
+            CreatePiece();
         }
         if (gameOver && unplacedPiece != null)
         {
@@ -102,64 +102,64 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         }
     }
 
-    CellController getBottomCell()
+    CellController GetBottomCell()
     {
         return cellGrid[bottomCellIndex];
     }
 
-    public void setGameOver(bool gameOver)
+    public void SetGameOver(bool gameOver)
     {
         this.gameOver = gameOver;
     }
 
-    public bool getWaitingForPieceToLand()
+    public bool GetWaitingForPieceToLand()
     {
         return waitingForPieceToLand;
     }
 
-    public void setWaitingForPieceToLand(bool waitingForPieceToLand)
+    public void SetWaitingForPieceToLand(bool waitingForPieceToLand)
     {
         this.waitingForPieceToLand = waitingForPieceToLand;
     }
 
-    public bool getPieceNeedsToBeParentedAndColoured()
+    public bool GetPieceNeedsToBeParentedAndColoured()
     {
         return pieceNeedsToBeParentedAndColoured;
     }
 
-    public void setPieceNeedsToBeParentedAndColoured(bool pieceNeedsToBeParentedAndColoured)
+    public void SetPieceNeedsToBeParentedAndColoured(bool pieceNeedsToBeParentedAndColoured)
     {
         this.pieceNeedsToBeParentedAndColoured = pieceNeedsToBeParentedAndColoured;
     }
 
-    public PieceController getUnplacedPiece()
+    public PieceController GetUnplacedPiece()
     {
         return unplacedPiece;
     }
 
-    public bool getTurnNeedsToBeSwitched()
+    public bool GetTurnNeedsToBeSwitched()
     {
         return turnNeedsToBeSwitched;
     }
 
-    public void setTurnNeedsToBeSwitched(bool turnNeedsToBeSwitched)
+    public void SetTurnNeedsToBeSwitched(bool turnNeedsToBeSwitched)
     {
         this.turnNeedsToBeSwitched = turnNeedsToBeSwitched;
     }
 
-    public void setRows(int rows)
+    public void SetRows(int rows)
     {
         this.rows = rows;
         cellGrid = new CellController[rows];
         InstantiateCells();
     }
 
-    public void setColumn(int column)
+    public void SetColumn(int column)
     {
         this.column = column;
     }
 
-    public CellController getCellAtRow(int row)
+    public CellController GetCellAtRow(int row)
     {
         return cellGrid[row];
     }

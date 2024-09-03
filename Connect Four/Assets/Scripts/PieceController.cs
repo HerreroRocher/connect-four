@@ -47,13 +47,6 @@ public class PieceController : MonoBehaviour
         }
     }
 
-    public void setParent(GameObject parent)
-    {
-        parentSet = true;
-        this.parent = parent;
-        parentCoordinates = parent.transform.position;
-    }
-
     void StopPiece()
     {
         // Debug.Log("Collision detected");
@@ -64,11 +57,6 @@ public class PieceController : MonoBehaviour
         rigidbody.isKinematic = true; // Optional
         stoppedMoving = true;
         SetPieceCoordinates(parentCoordinates);
-    }
-
-    public bool getStoppedMoving()
-    {
-        return stoppedMoving;
     }
 
     void SetPieceCoordinates(Vector3 coordinates)
@@ -106,27 +94,38 @@ public class PieceController : MonoBehaviour
         }
     }
 
-    public void setColour(Color colour)
+    public void SetColour(Color colour)
     {
         this.GetComponent<Image>().color = colour;
     }
 
-    public void setBelongsTo(int belongsTo)
+    public void SetBelongsTo(int belongsTo)
     {
         this.belongsTo = belongsTo;
     }
 
-    public int getBelongsTo()
+    public int GetBelongsTo()
     {
         return belongsTo;
     }
 
-    public void setDynamic()
+    public void SetDynamic()
     {
         // Debug.Log(rigidbody);
         // Debug.Log(rigidbody == null);
         rigidbody.bodyType = RigidbodyType2D.Dynamic;
     }
 
+    public void SetParent(GameObject parent)
+    {
+        parentSet = true;
+        this.parent = parent;
+        parentCoordinates = parent.transform.position;
+    }
+
+    public bool GetStoppedMoving()
+    {
+        return stoppedMoving;
+    }
 
 }
