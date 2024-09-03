@@ -38,7 +38,7 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene("GameScene");
     }
 
-    public void setGameData()
+    private void setGameData()
     {
         GameData.Players = this.players;
         GameData.Colors = this.colors;

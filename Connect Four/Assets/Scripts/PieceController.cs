@@ -19,7 +19,7 @@ public class PieceController : MonoBehaviour
     private bool _isCanvasSwitched = false;
     private int _belongsTo;
 
-    void Start()
+    private void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         if (_rigidbody == null)
@@ -35,7 +35,7 @@ public class PieceController : MonoBehaviour
         _startPosition = transform.position;
     }
 
-    void switchCanvas()
+    private void switchCanvas()
     {
 
         if (BackgroundAndPiecesCanvas != null)
@@ -47,7 +47,7 @@ public class PieceController : MonoBehaviour
         }
     }
 
-    void StopPiece()
+    private void StopPiece()
     {
         // Debug.Log("Collision detected");
         _rigidbody.velocity = Vector2.zero;
@@ -59,12 +59,12 @@ public class PieceController : MonoBehaviour
         SetPieceCoordinates(_parentCoordinates);
     }
 
-    void SetPieceCoordinates(Vector3 coordinates)
+    private void SetPieceCoordinates(Vector3 coordinates)
     {
         this.transform.position = coordinates;
     }
 
-    void Update()
+    private void Update()
     {
         // Debug.Log(transform.position);
         if (_isParentSet)

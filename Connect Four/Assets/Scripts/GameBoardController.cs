@@ -26,7 +26,7 @@ public class GameBoardController : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 
 
@@ -45,7 +45,7 @@ public class GameBoardController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         CheckForPiecesWhichNeedParentingAndColoring();
         GetIsWaitingForPieceToLand();
@@ -54,7 +54,7 @@ public class GameBoardController : MonoBehaviour
 
     }
 
-    void SetIsGameOverStatus()
+    private void SetIsGameOverStatus()
     {
         for (int column = 0; column < _columns; column++)
         {
@@ -63,7 +63,7 @@ public class GameBoardController : MonoBehaviour
         }
     }
 
-    void GetIsWaitingForPieceToLand()
+    private void GetIsWaitingForPieceToLand()
     {
 
         for (int column = 0; column < _columns; column++)
@@ -85,7 +85,7 @@ public class GameBoardController : MonoBehaviour
 
     }
 
-    void SetIsWaitingForPieceToLand()
+    private void SetIsWaitingForPieceToLand()
     {
         for (int column = 0; column < _columns; column++)
         {
@@ -96,13 +96,13 @@ public class GameBoardController : MonoBehaviour
 
     }
 
-    void InstantiateBoard()
+    private void InstantiateBoard()
     {
         InstantiateBaseRow();
         InstantiateColumns();
     }
 
-    void InstantiateColumns()
+    private void InstantiateColumns()
     {
         for (int columnNo = 0; columnNo < _columns; columnNo++)
         {
@@ -113,7 +113,7 @@ public class GameBoardController : MonoBehaviour
         }
     }
 
-    void InstantiateBaseRow()
+    private void InstantiateBaseRow()
     {
         for (int columnNo = -1; columnNo < _columns + 1; columnNo++)
         {
@@ -135,7 +135,7 @@ public class GameBoardController : MonoBehaviour
         }
     }
 
-    void CheckForPiecesWhichNeedParentingAndColoring()
+    private void CheckForPiecesWhichNeedParentingAndColoring()
     {
 
         for (int column = 0; column < _columns; column++)
@@ -162,7 +162,7 @@ public class GameBoardController : MonoBehaviour
 
     }
 
-    bool GameWonCheck(int playerNo)
+    private bool GameWonCheck(int playerNo)
     {
 
         if (CheckWinner(playerNo))
@@ -177,7 +177,7 @@ public class GameBoardController : MonoBehaviour
 
     }
 
-    bool CheckWinner(int playerNo)
+    private bool CheckWinner(int playerNo)
     {
 
 
@@ -364,7 +364,7 @@ public class GameBoardController : MonoBehaviour
         return false;
     }
 
-    void Log2DArray(int[,] array)
+    private void Log2DArray(int[,] array)
 
     {
         int rows = array.GetLength(0);
@@ -384,7 +384,7 @@ public class GameBoardController : MonoBehaviour
         Debug.Log(logMessage);
     }
 
-    void ColorWinningPieces(int[,] cells, int inARowReq)
+    private void ColorWinningPieces(int[,] cells, int inARowReq)
     {
 
         for (int i = 0; i < inARowReq; i++)

@@ -20,7 +20,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     private bool _isHovering = false;
     private bool _shouldSwitchTurn = false;
 
-    void InstantiateCells()
+    private void InstantiateCells()
     {
         // Debug.Log("Column created");
         for (int cellRowNo = 0; cellRowNo < _rows; cellRowNo++)
@@ -49,7 +49,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         CreatePiece();
     }
 
-    void CreatePiece()
+    private void CreatePiece()
     {
         // Debug.Log("isWaitingForPieceToLand " + isWaitingForPieceToLand);
         if (!_isWaitingForPieceToLand && !_isGameOver)
@@ -66,7 +66,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     }
 
-    void DestroyPiece()
+    private void DestroyPiece()
     {
         if (_unplacedPiece != null && !_isWaitingForPieceToLand)
         {
@@ -75,7 +75,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (_isWaitingForPieceToLand && _unplacedPiece != null)
         {
@@ -101,7 +101,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         }
     }
 
-    CellController GetBottomCell()
+    private CellController GetBottomCell()
     {
         return _cellGrid[_bottomCellIndex];
     }
