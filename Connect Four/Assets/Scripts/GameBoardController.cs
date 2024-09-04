@@ -39,7 +39,7 @@ public class GameBoardController : MonoBehaviour
 
         _columnGrid = new ColumnController[_columns];
         InstantiateBoard();
-        NextPlayerText.text = "It's your turn,\n" + _playerNames[_nextPlayerTurn];
+        SetNextPlayerText();
 
         // Debug.Log("Board created");
     }
@@ -54,6 +54,11 @@ public class GameBoardController : MonoBehaviour
 
     }
 
+    private void SetNextPlayerText()
+    {
+        NextPlayerText.text = "It's your turn,\n" + _playerNames[_nextPlayerTurn];
+
+    }
     private void SetIsGameOverStatus()
     {
         for (int column = 0; column < _columns; column++)
@@ -141,6 +146,13 @@ public class GameBoardController : MonoBehaviour
         for (int column = 0; column < _columns; column++)
         {
             ColumnController columnController = _columnGrid[column];
+            if (!GameWonCheck(_nextPlayerTurn) && columnController.GetShouldSwitchTurn())
+            {
+                _nextPlayerTurn = 1 - _nextPlayerTurn;
+                SetNextPlayerText();
+                columnController.SetShouldSwitchTurn(false);
+
+            }
             if (columnController.GetPieceNeedsParentingAndColoring() && columnController.GetUnplacedPiece())
             {
                 PieceController piece = columnController.GetUnplacedPiece();
@@ -150,13 +162,7 @@ public class GameBoardController : MonoBehaviour
 
             }
 
-            if (!GameWonCheck(_nextPlayerTurn) && columnController.GetShouldSwitchTurn())
-            {
-                _nextPlayerTurn = 1 - _nextPlayerTurn;
-                NextPlayerText.text = "It's your turn,\n" + _playerNames[_nextPlayerTurn];
-                columnController.SetShouldSwitchTurn(false);
 
-            }
 
         }
 

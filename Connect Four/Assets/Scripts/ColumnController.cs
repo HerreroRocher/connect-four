@@ -38,7 +38,6 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
             _unplacedPiece.SetParent(_cellGrid[_bottomCellIndex].gameObject);
             _unplacedPiece.SetDynamic();
             _isWaitingForPieceToLand = true;
-            _shouldSwitchTurn = true;
         }
 
     }
@@ -86,6 +85,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
                 _unplacedPiece = null;
                 _bottomCellIndex += 1;
                 _isWaitingForPieceToLand = false;
+                _shouldSwitchTurn = true;
 
 
             }
