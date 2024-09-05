@@ -65,6 +65,14 @@ public class GameBoardController : MonoBehaviour
         return _isWaitingForPieceToLand;
     }
 
+    public void CreatePieceInColumnWhichHoveringOver()
+    {
+        for (int col = 0; col < _columns; col++)
+        {
+            _columnGrid[col].CreatePieceIfHovering();
+        }
+    }
+
     private void InstantiateBoard()
     {
         InstantiateBaseRow();
@@ -117,6 +125,10 @@ public class GameBoardController : MonoBehaviour
         {
             // Debug.Log("WINNER");
             _isGameOver = true;
+            for (int columnNo = 0; columnNo < _columns; columnNo++)
+            {
+                _columnGrid[columnNo].SetGameOver();
+            }
             NextPlayerText.text = _playerNames[_nextPlayerTurn] + " wins!";
         }
         else

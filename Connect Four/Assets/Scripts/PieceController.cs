@@ -8,16 +8,22 @@ using UnityEngine.UI;
 public class PieceController : MonoBehaviour
 {
 
-    public GameObject BackgroundAndPiecesCanvas;
+    private GameObject BackgroundAndPiecesCanvas;
     private Rigidbody2D _rigidbody;
     private bool _hasStoppedMoving;
     private GameObject _parent;
     private Vector3 _parentCoordinates;
-    private bool _isParentSet = false;
     private Vector3 _startPosition;
     private Vector3 _spawnPosition;
     private bool _isCanvasSwitched = false;
     private int _belongsTo;
+    private ColumnController _columnController;
+
+
+    public void SetColumnController(ColumnController columnController)
+    {
+        _columnController = columnController;
+    }
 
     private void Start()
     {
@@ -67,7 +73,7 @@ public class PieceController : MonoBehaviour
     private void Update()
     {
         // Debug.Log(transform.position);
-        if (_isParentSet)
+        if (_parent)
         {
             // Debug.Log("this.transform.position: " + this.transform.position);
             // Debug.Log("parentCoordinates " + parentCoordinates);
@@ -76,6 +82,7 @@ public class PieceController : MonoBehaviour
             if (this.transform.position.y <= _parentCoordinates.y && _rigidbody.velocity != Vector2.zero)
             {
                 StopPiece();
+                _columnController.AcknowledgePieceHasStopped();
             }
         }
 
@@ -118,7 +125,6 @@ public class PieceController : MonoBehaviour
 
     public void SetParent(GameObject parent)
     {
-        _isParentSet = true;
         this._parent = parent;
         _parentCoordinates = parent.transform.position;
     }
