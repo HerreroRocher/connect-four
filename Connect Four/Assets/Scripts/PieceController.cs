@@ -54,7 +54,7 @@ public class PieceController : MonoBehaviour
         _rigidbody.gravityScale = 0;
         _rigidbody.angularVelocity = 0;
         _rigidbody.angularDrag = 0;
-        _rigidbody.isKinematic = true; // Optional
+        _rigidbody.isKinematic = true;
         _hasStoppedMoving = true;
         SetPieceCoordinates(_parentCoordinates);
     }

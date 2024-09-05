@@ -9,18 +9,19 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 {
     public GameObject CellPrefab;
     public GameObject PiecePrefab;
+
+
     private CellController[] _cellGrid;
     private PieceController _unplacedPiece;
-    private int _rows;
-    private int _column;
     private int _bottomCellIndex = 0;
     private bool _isHovering = false;
     private GameBoardController _gameBoard;
 
-    private void InstantiateCells()
+    public void InstantiateCells(int rows)
     {
+        _cellGrid = new CellController[rows];
         // Debug.Log("Column created");
-        for (int cellRowNo = 0; cellRowNo < _rows; cellRowNo++)
+        for (int cellRowNo = 0; cellRowNo < rows; cellRowNo++)
         {
             _cellGrid[cellRowNo] = Instantiate(CellPrefab, transform).GetComponent<CellController>();
         }
@@ -46,8 +47,11 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _isHovering = true;
-        CreatePiece();
+        if (_bottomCellIndex < _cellGrid.Length)
+        {
+            _isHovering = true;
+            CreatePiece();
+        }
     }
 
     private void CreatePiece()
@@ -78,12 +82,12 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     private void Update()
     {
-        if (_gameBoard.GetIsWaitingForPieceToLand() && _unplacedPiece != null)
+        if (_gameBoard.GetIsWaitingForPieceToLand() && _unplacedPiece && _cellGrid != null)
         {
 
             if (_unplacedPiece.GetHasStoppedMoving())
             {
-                GetBottomCell().SetPiece(_unplacedPiece);
+                _cellGrid[_bottomCellIndex].SetPiece(_unplacedPiece);
                 _unplacedPiece = null;
                 _bottomCellIndex += 1;
                 _gameBoard.SetIsWaitingForPieceToLand(false);
@@ -91,7 +95,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
             }
 
         }
-        if (_isHovering && !_gameBoard.GetIsWaitingForPieceToLand() && _unplacedPiece == null)
+        if (_isHovering && !_gameBoard.GetIsWaitingForPieceToLand() && _unplacedPiece == null && _bottomCellIndex < _cellGrid.Length)
         {
             CreatePiece();
         }
@@ -101,21 +105,6 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         }
     }
 
-    private CellController GetBottomCell()
-    {
-        return _cellGrid[_bottomCellIndex];
-    }
-    public void SetRows(int rows)
-    {
-        this._rows = rows;
-        _cellGrid = new CellController[rows];
-        InstantiateCells();
-    }
-
-    public void SetColumn(int column)
-    {
-        this._column = column;
-    }
 
     public CellController GetCellAtRow(int row)
     {

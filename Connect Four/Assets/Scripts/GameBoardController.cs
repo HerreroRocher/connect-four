@@ -8,24 +8,24 @@ public class GameBoardController : MonoBehaviour
 {
 
     public TextMeshProUGUI NextPlayerText;
+    public GameObject BaseRow;
+    public GameObject BaseCellPrefab;
+    public GameObject LeftBaseCellPrefab;
+    public GameObject RightBaseCellPrefab;
+    public GameObject ColumnPrefab;
     private int _columns;
     private int _rows;
     private int _inARowRequirements;
     private Color[] _playerColors;
     private string[] _playerNames;
-    public GameObject ColumnPrefab;
-    public GameObject BaseRow;
-    public GameObject BaseCellPrefab;
-    public GameObject LeftBaseCellPrefab;
-    public GameObject RightBaseCellPrefab;
+
+
     private ColumnController[] _columnGrid;
     private int _nextPlayerTurn = 0;
     private bool _isGameOver = false;
     private bool _isWaitingForPieceToLand = false;
 
 
-
-    // Start is called before the first frame update
     private void Start()
     {
 
@@ -76,8 +76,7 @@ public class GameBoardController : MonoBehaviour
         for (int columnNo = 0; columnNo < _columns; columnNo++)
         {
             ColumnController columnClassInstance = Instantiate(ColumnPrefab, transform).GetComponent<ColumnController>();
-            columnClassInstance.SetColumn(columnNo + 1);
-            columnClassInstance.SetRows(_rows);
+            columnClassInstance.InstantiateCells(_rows);
             columnClassInstance.SetGameBoardController(this);
             _columnGrid[columnNo] = columnClassInstance;
         }
@@ -140,7 +139,7 @@ public class GameBoardController : MonoBehaviour
         {
             for (int col = 0; col < _columns; col++)
             {
-                CellController currentCellChecking = _columnGrid[col].GetCellAtRow(row);
+                CellController currentCellChecking = GetCell(col, row);
 
                 bool isoccupied = currentCellChecking.GetIsOccupied();
 
@@ -260,7 +259,7 @@ public class GameBoardController : MonoBehaviour
                     }
 
                     // Log2DArray(cells);
-                    ColorWinningPieces(cells, _inARowRequirements);
+                    ColorWinningPieces(cells);
 
                     return true;
                 }
@@ -275,7 +274,7 @@ public class GameBoardController : MonoBehaviour
                     }
 
                     // Log2DArray(cells);
-                    ColorWinningPieces(cells, _inARowRequirements);
+                    ColorWinningPieces(cells);
                     return true;
                 }
                 else if (diagonalRightUpWin(col, row) == _inARowRequirements)
@@ -289,7 +288,7 @@ public class GameBoardController : MonoBehaviour
                     }
 
                     // Log2DArray(cells);
-                    ColorWinningPieces(cells, _inARowRequirements);
+                    ColorWinningPieces(cells);
                     return true;
                 }
                 else if (rightwardsWin(col, row) == _inARowRequirements)
@@ -303,7 +302,7 @@ public class GameBoardController : MonoBehaviour
                     }
 
                     // Log2DArray(cells);
-                    ColorWinningPieces(cells, _inARowRequirements);
+                    ColorWinningPieces(cells);
                     return true;
                 }
 
@@ -316,36 +315,16 @@ public class GameBoardController : MonoBehaviour
         return false;
     }
 
-    private void Log2DArray(int[,] array)
-
-    {
-        int rows = array.GetLength(0);
-        int columns = array.GetLength(1);
-        string logMessage = "2D Array:\n";
-
-        for (int col = columns - 1; col > -1; col--)
-        {
-            for (int row = 0; row < rows; row++)
-            {
-                logMessage += array[row, col] + "\t"; // Use tab for spacing
-            }
-            logMessage += "\n"; // New line for the next row
-                                // Debug.Log("Row iterated");
-        }
-
-        Debug.Log(logMessage);
-    }
-
-    private void ColorWinningPieces(int[,] cells, int inARowReq)
+    private void ColorWinningPieces(int[,] cells)
     {
 
-        for (int i = 0; i < inARowReq; i++)
+        for (int i = 0; i < _inARowRequirements; i++)
         {
             int colNo = cells[i, 0];
             int rowNo = cells[i, 1];
             // Debug.Log("Need to color cell in column " + (colNo + 1) + " row " + (rowNo + 1));
 
-            CellController currentCellChecking = _columnGrid[colNo].GetCellAtRow(rowNo);
+            CellController currentCellChecking = GetCell(colNo, rowNo);
 
             currentCellChecking.SetWon();
 
@@ -354,5 +333,29 @@ public class GameBoardController : MonoBehaviour
 
     }
 
+    private CellController GetCell(int col, int row)
+    {
+        return _columnGrid[col].GetCellAtRow(row);
+    }
+
+    // private void Log2DArray(int[,] array)
+
+    // {
+    //     int rows = array.GetLength(0);
+    //     int columns = array.GetLength(1);
+    //     string logMessage = "2D Array:\n";
+
+    //     for (int col = columns - 1; col > -1; col--)
+    //     {
+    //         for (int row = 0; row < rows; row++)
+    //         {
+    //             logMessage += array[row, col] + "\t"; // Use tab for spacing
+    //         }
+    //         logMessage += "\n"; // New line for the next row
+    //                             // Debug.Log("Row iterated");
+    //     }
+
+    //     Debug.Log(logMessage);
+    // }
 
 }
