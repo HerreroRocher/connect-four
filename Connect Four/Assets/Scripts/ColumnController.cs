@@ -14,7 +14,6 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     private int _rows;
     private int _column;
     private int _bottomCellIndex = 0;
-    private bool _isGameOver = false;
     private bool _isHovering = false;
     private GameBoardController _gameBoard;
 
@@ -36,7 +35,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     {
         // Debug.Log("Cell clicked");
         // Debug.Log("Clicked on cell in column " + column);
-        if (_unplacedPiece != null && !_isGameOver)
+        if (_unplacedPiece != null && !_gameBoard.GetIsGameOver())
         {
             _unplacedPiece.SetParent(_cellGrid[_bottomCellIndex].gameObject);
             _unplacedPiece.SetDynamic();
@@ -54,7 +53,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     private void CreatePiece()
     {
         // Debug.Log("isWaitingForPieceToLand " + isWaitingForPieceToLand);
-        if (!_gameBoard.GetIsWaitingForPieceToLand() && !_isGameOver)
+        if (!_gameBoard.GetIsWaitingForPieceToLand() && !_gameBoard.GetIsGameOver())
         {
             _unplacedPiece = Instantiate(PiecePrefab, transform.position + new Vector3(0, 5, 0), Quaternion.identity, transform).GetComponent<PieceController>();
             _gameBoard.SetPieceOwnerAndColor(_unplacedPiece);
@@ -96,7 +95,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         {
             CreatePiece();
         }
-        if (_isGameOver && _unplacedPiece != null)
+        if (_gameBoard.GetIsGameOver() && _unplacedPiece != null)
         {
             DestroyPiece();
         }
@@ -106,12 +105,6 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     {
         return _cellGrid[_bottomCellIndex];
     }
-
-    public void SetIsGameOver(bool isGameOver)
-    {
-        this._isGameOver = isGameOver;
-    }
-
     public void SetRows(int rows)
     {
         this._rows = rows;

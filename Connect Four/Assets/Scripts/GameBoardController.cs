@@ -44,26 +44,15 @@ public class GameBoardController : MonoBehaviour
         // Debug.Log("Board created");
     }
 
-    // Update is called once per frame
-    private void Update()
-    {
-        SetIsGameOverStatus();
-    }
-
-
     private void SetNextPlayerText()
     {
         NextPlayerText.text = "It's your turn,\n" + _playerNames[_nextPlayerTurn];
 
     }
 
-    private void SetIsGameOverStatus()
+    public bool GetIsGameOver()
     {
-        for (int column = 0; column < _columns; column++)
-        {
-            _columnGrid[column].SetIsGameOver(_isGameOver);
-
-        }
+        return _isGameOver;
     }
 
     public void SetIsWaitingForPieceToLand(bool isWaitingForPieceToLand)
