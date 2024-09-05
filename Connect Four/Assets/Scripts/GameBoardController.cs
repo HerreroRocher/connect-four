@@ -54,11 +54,13 @@ public class GameBoardController : MonoBehaviour
 
     }
 
+
     private void SetNextPlayerText()
     {
         NextPlayerText.text = "It's your turn,\n" + _playerNames[_nextPlayerTurn];
 
     }
+
     private void SetIsGameOverStatus()
     {
         for (int column = 0; column < _columns; column++)
@@ -75,12 +77,6 @@ public class GameBoardController : MonoBehaviour
         {
             if (_columnGrid[column].GetIsWaitingForPieceToLand() != _isWaitingForPieceToLand)
             {
-                if (_columnGrid[column].GetIsWaitingForPieceToLand() == false)
-                {
-                    //This runs when a piece in any column lands
-                    GameWonCheck(1 - _nextPlayerTurn);
-                    // GameWonCheck(nextPlayerTurn);
-                }
                 _isWaitingForPieceToLand = _columnGrid[column].GetIsWaitingForPieceToLand();
                 break;
 
@@ -111,10 +107,11 @@ public class GameBoardController : MonoBehaviour
     {
         for (int columnNo = 0; columnNo < _columns; columnNo++)
         {
-            GameObject columnObj = Instantiate(ColumnPrefab, transform);
-            _columnGrid[columnNo] = columnObj.GetComponent<ColumnController>();
-            _columnGrid[columnNo].SetColumn(columnNo + 1);
-            _columnGrid[columnNo].SetRows(_rows);
+            ColumnController columnClassInstance = Instantiate(ColumnPrefab, transform).GetComponent<ColumnController>();
+            columnClassInstance.SetColumn(columnNo + 1);
+            columnClassInstance.SetRows(_rows);
+            columnClassInstance.SetGameBoardController(this);
+            _columnGrid[columnNo] = columnClassInstance;
         }
     }
 
@@ -146,13 +143,6 @@ public class GameBoardController : MonoBehaviour
         for (int column = 0; column < _columns; column++)
         {
             ColumnController columnController = _columnGrid[column];
-            if (!GameWonCheck(_nextPlayerTurn) && columnController.GetShouldSwitchTurn())
-            {
-                _nextPlayerTurn = 1 - _nextPlayerTurn;
-                SetNextPlayerText();
-                columnController.SetShouldSwitchTurn(false);
-
-            }
             if (columnController.GetPieceNeedsParentingAndColoring() && columnController.GetUnplacedPiece())
             {
                 PieceController piece = columnController.GetUnplacedPiece();
@@ -168,18 +158,21 @@ public class GameBoardController : MonoBehaviour
 
     }
 
-    private bool GameWonCheck(int playerNo)
+    public void CheckIfGameWon()
     {
 
-        if (CheckWinner(playerNo))
+        if (CheckWinner(_nextPlayerTurn))
         {
             // Debug.Log("WINNER");
             _isGameOver = true;
-            NextPlayerText.text = _playerNames[playerNo] + " wins!";
-            return true;
+            NextPlayerText.text = _playerNames[_nextPlayerTurn] + " wins!";
+        }
+        else
+        {
+            _nextPlayerTurn = 1 - _nextPlayerTurn;
+            SetNextPlayerText();
         }
 
-        return false;
 
     }
 

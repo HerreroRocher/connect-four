@@ -18,7 +18,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     private bool _isWaitingForPieceToLand = false;
     private bool _isGameOver = false;
     private bool _isHovering = false;
-    private bool _shouldSwitchTurn = false;
+    private GameBoardController _gameBoardController;
 
     private void InstantiateCells()
     {
@@ -27,6 +27,10 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         {
             _cellGrid[cellRowNo] = Instantiate(CellPrefab, transform).GetComponent<CellController>();
         }
+    }
+
+    public void SetGameBoardController(GameBoardController gameBoardController){
+        _gameBoardController = gameBoardController;
     }
 
     public void OnPointerDown(PointerEventData pointer)
@@ -85,7 +89,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
                 _unplacedPiece = null;
                 _bottomCellIndex += 1;
                 _isWaitingForPieceToLand = false;
-                _shouldSwitchTurn = true;
+                _gameBoardController.CheckIfGameWon()
 
 
             }
@@ -134,16 +138,6 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     public PieceController GetUnplacedPiece()
     {
         return _unplacedPiece;
-    }
-
-    public bool GetShouldSwitchTurn()
-    {
-        return _shouldSwitchTurn;
-    }
-
-    public void SetShouldSwitchTurn(bool shouldSwitchTurn)
-    {
-        this._shouldSwitchTurn = shouldSwitchTurn;
     }
 
     public void SetRows(int rows)
