@@ -47,10 +47,7 @@ public class GameBoardController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        GetIsWaitingForPieceToLand();
-        SetIsWaitingForPieceToLand();
         SetIsGameOverStatus();
-
     }
 
 
@@ -69,31 +66,14 @@ public class GameBoardController : MonoBehaviour
         }
     }
 
-    private void GetIsWaitingForPieceToLand()
+    public void SetIsWaitingForPieceToLand(bool isWaitingForPieceToLand)
     {
-
-        for (int column = 0; column < _columns; column++)
-        {
-            if (_columnGrid[column].GetIsWaitingForPieceToLand() != _isWaitingForPieceToLand)
-            {
-                _isWaitingForPieceToLand = _columnGrid[column].GetIsWaitingForPieceToLand();
-                break;
-
-            }
-
-        }
-
+        _isWaitingForPieceToLand = isWaitingForPieceToLand;
     }
 
-    private void SetIsWaitingForPieceToLand()
+    public bool GetIsWaitingForPieceToLand()
     {
-        for (int column = 0; column < _columns; column++)
-        {
-            _columnGrid[column].SetIsWaitingForPieceToLand(_isWaitingForPieceToLand);
-            // Debug.Log("Column: " + columnGrid[column].column + ", isWaitingForPieceToLand: " + columnGrid[column].isWaitingForPieceToLand);
-        }
-
-
+        return _isWaitingForPieceToLand;
     }
 
     private void InstantiateBoard()

@@ -14,10 +14,9 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     private int _rows;
     private int _column;
     private int _bottomCellIndex = 0;
-    private bool _isWaitingForPieceToLand = false;
     private bool _isGameOver = false;
     private bool _isHovering = false;
-    private GameBoardController _gameBoardController;
+    private GameBoardController _gameBoard;
 
     private void InstantiateCells()
     {
@@ -30,7 +29,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     public void SetGameBoardController(GameBoardController gameBoardController)
     {
-        _gameBoardController = gameBoardController;
+        _gameBoard = gameBoardController;
     }
 
     public void OnPointerDown(PointerEventData pointer)
@@ -41,7 +40,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         {
             _unplacedPiece.SetParent(_cellGrid[_bottomCellIndex].gameObject);
             _unplacedPiece.SetDynamic();
-            _isWaitingForPieceToLand = true;
+            _gameBoard.SetIsWaitingForPieceToLand(true);
         }
 
     }
@@ -55,10 +54,10 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     private void CreatePiece()
     {
         // Debug.Log("isWaitingForPieceToLand " + isWaitingForPieceToLand);
-        if (!_isWaitingForPieceToLand && !_isGameOver)
+        if (!_gameBoard.GetIsWaitingForPieceToLand() && !_isGameOver)
         {
             _unplacedPiece = Instantiate(PiecePrefab, transform.position + new Vector3(0, 5, 0), Quaternion.identity, transform).GetComponent<PieceController>();
-            _gameBoardController.SetPieceOwnerAndColor(_unplacedPiece);
+            _gameBoard.SetPieceOwnerAndColor(_unplacedPiece);
         }
     }
 
@@ -71,7 +70,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     private void DestroyPiece()
     {
-        if (_unplacedPiece != null && !_isWaitingForPieceToLand)
+        if (_unplacedPiece != null && !_gameBoard.GetIsWaitingForPieceToLand())
         {
             Destroy(_unplacedPiece.gameObject);
             _unplacedPiece = null;
@@ -80,7 +79,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     private void Update()
     {
-        if (_isWaitingForPieceToLand && _unplacedPiece != null)
+        if (_gameBoard.GetIsWaitingForPieceToLand() && _unplacedPiece != null)
         {
 
             if (_unplacedPiece.GetHasStoppedMoving())
@@ -88,12 +87,12 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
                 GetBottomCell().SetPiece(_unplacedPiece);
                 _unplacedPiece = null;
                 _bottomCellIndex += 1;
-                _isWaitingForPieceToLand = false;
-                _gameBoardController.CheckIfGameWon();
+                _gameBoard.SetIsWaitingForPieceToLand(false);
+                _gameBoard.CheckIfGameWon();
             }
 
         }
-        if (_isHovering && !_isWaitingForPieceToLand && _unplacedPiece == null)
+        if (_isHovering && !_gameBoard.GetIsWaitingForPieceToLand() && _unplacedPiece == null)
         {
             CreatePiece();
         }
@@ -111,16 +110,6 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     public void SetIsGameOver(bool isGameOver)
     {
         this._isGameOver = isGameOver;
-    }
-
-    public bool GetIsWaitingForPieceToLand()
-    {
-        return _isWaitingForPieceToLand;
-    }
-
-    public void SetIsWaitingForPieceToLand(bool isWaitingForPieceToLand)
-    {
-        this._isWaitingForPieceToLand = isWaitingForPieceToLand;
     }
 
     public void SetRows(int rows)
