@@ -14,7 +14,6 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     private int _rows;
     private int _column;
     private int _bottomCellIndex = 0;
-    private bool _pieceNeedsParentingAndColoring = false;
     private bool _isWaitingForPieceToLand = false;
     private bool _isGameOver = false;
     private bool _isHovering = false;
@@ -29,7 +28,8 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         }
     }
 
-    public void SetGameBoardController(GameBoardController gameBoardController){
+    public void SetGameBoardController(GameBoardController gameBoardController)
+    {
         _gameBoardController = gameBoardController;
     }
 
@@ -58,7 +58,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         if (!_isWaitingForPieceToLand && !_isGameOver)
         {
             _unplacedPiece = Instantiate(PiecePrefab, transform.position + new Vector3(0, 5, 0), Quaternion.identity, transform).GetComponent<PieceController>();
-            _pieceNeedsParentingAndColoring = true;
+            _gameBoardController.SetPieceOwnerAndColor(_unplacedPiece);
         }
     }
 
@@ -89,9 +89,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
                 _unplacedPiece = null;
                 _bottomCellIndex += 1;
                 _isWaitingForPieceToLand = false;
-                _gameBoardController.CheckIfGameWon()
-
-
+                _gameBoardController.CheckIfGameWon();
             }
 
         }
@@ -123,21 +121,6 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     public void SetIsWaitingForPieceToLand(bool isWaitingForPieceToLand)
     {
         this._isWaitingForPieceToLand = isWaitingForPieceToLand;
-    }
-
-    public bool GetPieceNeedsParentingAndColoring()
-    {
-        return _pieceNeedsParentingAndColoring;
-    }
-
-    public void SetPieceNeedsParentingAndColoring(bool pieceNeedsParentingAndColoring)
-    {
-        this._pieceNeedsParentingAndColoring = pieceNeedsParentingAndColoring;
-    }
-
-    public PieceController GetUnplacedPiece()
-    {
-        return _unplacedPiece;
     }
 
     public void SetRows(int rows)

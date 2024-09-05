@@ -47,7 +47,6 @@ public class GameBoardController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        CheckForPiecesWhichNeedParentingAndColoring();
         GetIsWaitingForPieceToLand();
         SetIsWaitingForPieceToLand();
         SetIsGameOverStatus();
@@ -137,25 +136,10 @@ public class GameBoardController : MonoBehaviour
         }
     }
 
-    private void CheckForPiecesWhichNeedParentingAndColoring()
+    public void SetPieceOwnerAndColor(PieceController piece)
     {
-
-        for (int column = 0; column < _columns; column++)
-        {
-            ColumnController columnController = _columnGrid[column];
-            if (columnController.GetPieceNeedsParentingAndColoring() && columnController.GetUnplacedPiece())
-            {
-                PieceController piece = columnController.GetUnplacedPiece();
-                piece.SetColor(_playerColors[_nextPlayerTurn]);
-                piece.SetBelongsTo(_nextPlayerTurn);
-                columnController.SetPieceNeedsParentingAndColoring(false);
-
-            }
-
-
-
-        }
-
+        piece.SetColor(_playerColors[_nextPlayerTurn]);
+        piece.SetBelongsTo(_nextPlayerTurn);
     }
 
     public void CheckIfGameWon()
