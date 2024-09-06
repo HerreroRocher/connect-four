@@ -299,7 +299,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -200, y: -150}
+  m_AnchoredPosition: {x: -100, y: -150}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &431921371
@@ -747,7 +747,7 @@ RectTransform:
   m_GameObject: {fileID: 689329942}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -8.427784}
-  m_LocalScale: {x: 1.3333334, y: 1.3333334, z: 1.3333334}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1136278978}
@@ -794,11 +794,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NextPlayerText: {fileID: 431921371}
-  ColumnPrefab: {fileID: 8237143448087638575, guid: 7d292303bb13a39429855244dfea4330, type: 3}
   BaseRow: {fileID: 1335967216}
   BaseCellPrefab: {fileID: 6504955925120179165, guid: 6112e940c9a7a404aaaffb06cc7802f3, type: 3}
   LeftBaseCellPrefab: {fileID: 2561981694405490021, guid: 9740290c912407849861e2ee66aedfca, type: 3}
   RightBaseCellPrefab: {fileID: 7801368913144840723, guid: cdcf37a594a07cb49a0dec740953f76a, type: 3}
+  ColumnPrefab: {fileID: 8237143448087638575, guid: 7d292303bb13a39429855244dfea4330, type: 3}
 --- !u!1 &742583419
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,18 +953,18 @@ RectTransform:
   m_GameObject: {fileID: 1136278977}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1335967217}
   - {fileID: 689329943}
   m_Father: {fileID: 742583420}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -300}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 140, y: 140}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1136278979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -982,7 +982,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 1
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 0, y: 0}
@@ -1015,7 +1015,7 @@ RectTransform:
   m_GameObject: {fileID: 1335967216}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -8.427784}
-  m_LocalScale: {x: 1, y: 1, z: 1.3333334}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1136278978}

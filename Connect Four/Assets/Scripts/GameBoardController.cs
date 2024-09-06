@@ -75,40 +75,45 @@ public class GameBoardController : MonoBehaviour
 
     private void InstantiateBoard()
     {
-        InstantiateBaseRow();
-        InstantiateColumns();
+        float cellWidth = 800f / _rows;
+        GetComponent<GridLayoutGroup>().cellSize = new Vector2(cellWidth, 0);
+        InstantiateBaseRow(cellWidth);
+        InstantiateColumns(cellWidth);
     }
 
-    private void InstantiateColumns()
+    private void InstantiateColumns(float cellWidth)
     {
         for (int columnNo = 0; columnNo < _columns; columnNo++)
         {
             ColumnController columnClassInstance = Instantiate(ColumnPrefab, transform).GetComponent<ColumnController>();
-            columnClassInstance.InstantiateCells(_rows);
+            columnClassInstance.InstantiateCells(_rows, cellWidth);
             columnClassInstance.SetGameBoardController(this);
             _columnGrid[columnNo] = columnClassInstance;
         }
     }
 
-    private void InstantiateBaseRow()
+    private void InstantiateBaseRow(float cellWidth)
     {
         for (int columnNo = -1; columnNo < _columns + 1; columnNo++)
         {
+            GameObject baseCellObj;
             if (columnNo == -1)
             {
-                GameObject baseCellObj = Instantiate(LeftBaseCellPrefab, BaseRow.transform);
+                baseCellObj = Instantiate(LeftBaseCellPrefab, BaseRow.transform);
 
             }
             else if (columnNo == _columns)
             {
-                GameObject baseCellObj = Instantiate(RightBaseCellPrefab, BaseRow.transform);
+                baseCellObj = Instantiate(RightBaseCellPrefab, BaseRow.transform);
 
             }
             else
             {
 
-                GameObject baseCellObj = Instantiate(BaseCellPrefab, BaseRow.transform);
+                baseCellObj = Instantiate(BaseCellPrefab, BaseRow.transform);
             }
+
+            BaseRow.GetComponent<GridLayoutGroup>().cellSize = new Vector2(cellWidth, 0.5f * cellWidth * (_rows/5 + 1) );
         }
     }
 

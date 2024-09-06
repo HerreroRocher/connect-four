@@ -18,6 +18,7 @@ public class PieceController : MonoBehaviour
     private bool _isCanvasSwitched = false;
     private int _belongsTo;
     private ColumnController _columnController;
+    private Vector2 size;
 
 
     public void SetColumnController(ColumnController columnController)
@@ -41,13 +42,18 @@ public class PieceController : MonoBehaviour
         _startPosition = transform.position;
     }
 
+    public void SetPieceSize(float pieceWidth){
+        size = new Vector2(pieceWidth, pieceWidth);
+        GetComponent<RectTransform>().sizeDelta = size;
+    }
+
     private void switchCanvas()
     {
 
         if (BackgroundAndPiecesCanvas != null)
         {
             this.transform.SetParent(BackgroundAndPiecesCanvas.transform, false);
-            gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(105, 105);
+            gameObject.GetComponent<RectTransform>().sizeDelta = size;
 
 
         }

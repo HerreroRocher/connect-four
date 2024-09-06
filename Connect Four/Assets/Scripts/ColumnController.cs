@@ -15,12 +15,14 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     private PieceController _unplacedPiece;
     private int _bottomCellIndex = 0;
     private GameBoardController _gameBoardController;
-
     private bool _isHovering = false;
+    private float _pieceWidth;
 
 
-    public void InstantiateCells(int rows)
+    public void InstantiateCells(int rows, float cellWidth)
     {
+        _pieceWidth = cellWidth;
+        GetComponent<GridLayoutGroup>().cellSize = new Vector2(cellWidth, cellWidth);
         _cellGrid = new CellController[rows];
         // Debug.Log("Column created");
         for (int cellRowNo = 0; cellRowNo < rows; cellRowNo++)
@@ -62,6 +64,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         if (!_gameBoardController.GetIsWaitingForPieceToLand() && !_gameBoardController.GetIsGameOver())
         {
             _unplacedPiece = Instantiate(PiecePrefab, transform.position + new Vector3(0, 5, 0), Quaternion.identity, transform).GetComponent<PieceController>();
+            _unplacedPiece.SetPieceSize(_pieceWidth);
             _unplacedPiece.SetColumnController(this);
             _gameBoardController.SetPieceOwnerAndColor(_unplacedPiece);
         }
