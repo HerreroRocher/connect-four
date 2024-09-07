@@ -13,6 +13,7 @@ public class GameBoardController : MonoBehaviour
     public GameObject LeftBaseCellPrefab;
     public GameObject RightBaseCellPrefab;
     public GameObject ColumnPrefab;
+    public GameObject DoubleMoveButton;
     private int _columns;
     private int _rows;
     private int _inARowRequirements;
@@ -24,6 +25,8 @@ public class GameBoardController : MonoBehaviour
     private int _nextPlayerTurn = 0;
     private bool _isGameOver = false;
     private bool _isWaitingForPieceToLand = false;
+    private PieceController _lastPiecePlaced;
+    private bool _isDoubleMoveTurn = false;
 
 
     private void Start()
@@ -49,6 +52,23 @@ public class GameBoardController : MonoBehaviour
         NextPlayerText.text = "It's your turn,\n" + _playerNames[_nextPlayerTurn];
 
     }
+
+    public void HandleDoubleMoveButtonClick()
+    {
+        Debug.Log("DoubleMoveButton clicked!");
+        if (!_isWaitingForPieceToLand)
+        {
+            DoubleMoveButton.GetComponent<Image>().color = new Color(0.6f, 0.6f, 0.6f, 1);
+            _isDoubleMoveTurn = true;
+        }
+
+    }
+
+    public void HandleTakeOverEnemyPieceButtonClick()
+    {
+        Debug.Log("TakeOverEnemyPiece button clicked!");
+    }
+
 
     public bool GetIsGameOver()
     {
@@ -113,7 +133,7 @@ public class GameBoardController : MonoBehaviour
                 baseCellObj = Instantiate(BaseCellPrefab, BaseRow.transform);
             }
 
-            BaseRow.GetComponent<GridLayoutGroup>().cellSize = new Vector2(cellWidth, 0.5f * cellWidth * (_rows/5 + 1) );
+            BaseRow.GetComponent<GridLayoutGroup>().cellSize = new Vector2(cellWidth, 0.5f * cellWidth * (_rows / 5 + 1));
         }
     }
 
@@ -138,7 +158,15 @@ public class GameBoardController : MonoBehaviour
         }
         else
         {
-            _nextPlayerTurn = 1 - _nextPlayerTurn;
+            if (_isDoubleMoveTurn)
+            {
+                _isDoubleMoveTurn = false;
+            }
+            else
+            {
+                DoubleMoveButton.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+                _nextPlayerTurn = 1 - _nextPlayerTurn;
+            }
             SetNextPlayerText();
         }
 
