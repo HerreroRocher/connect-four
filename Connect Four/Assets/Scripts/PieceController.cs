@@ -19,6 +19,8 @@ public class PieceController : MonoBehaviour
     private int _belongsTo;
     private ColumnController _columnController;
     private Vector2 _size;
+    private GameBoardController _gameBoardController;
+    private bool _switchTurnOnLanding = true;
 
 
     public void SetColumnController(ColumnController columnController)
@@ -42,11 +44,16 @@ public class PieceController : MonoBehaviour
         _startPosition = transform.position;
     }
 
-    public void SetPieceSize(float pieceWidth){
+    public void SetPieceSize(float pieceWidth)
+    {
         _size = new Vector2(pieceWidth, pieceWidth);
         GetComponent<RectTransform>().sizeDelta = _size;
     }
 
+    public void SetSwitchTurnOnLanding(bool switchTurnOnLanding)
+    {
+        _switchTurnOnLanding = switchTurnOnLanding;
+    }
     private void switchCanvas()
     {
 
@@ -61,7 +68,7 @@ public class PieceController : MonoBehaviour
 
     private void StopPiece()
     {
-        // Debug.Log("Collision detected");
+        
         _rigidbody.velocity = Vector2.zero;
         _rigidbody.gravityScale = 0;
         _rigidbody.angularVelocity = 0;
@@ -69,6 +76,7 @@ public class PieceController : MonoBehaviour
         _rigidbody.isKinematic = true;
         _hasStoppedMoving = true;
         SetPieceCoordinates(_parentCoordinates);
+        Debug.Log("Piece has landed at " + _parentCoordinates);
     }
 
     private void SetPieceCoordinates(Vector3 coordinates)
@@ -88,7 +96,14 @@ public class PieceController : MonoBehaviour
             if (this.transform.position.y <= _parentCoordinates.y && _rigidbody.velocity != Vector2.zero)
             {
                 StopPiece();
-                _columnController.AcknowledgePieceHasStopped();
+                _gameBoardController.SetIsWaitingForPieceToLand(false);
+                _parent.GetComponent<CellController>().SetPiece(this);
+                if (_switchTurnOnLanding)
+                {
+                    _gameBoardController.CheckIfGameWon();
+                    _gameBoardController.SwitchTurns();
+                    _gameBoardController.CreatePieceInColumnWhichHoveringOver();
+                }
             }
         }
 
@@ -127,6 +142,8 @@ public class PieceController : MonoBehaviour
         // Debug.Log(rigidbody);
         // Debug.Log(rigidbody == null);
         _rigidbody.bodyType = RigidbodyType2D.Dynamic;
+        _rigidbody.gravityScale = 400;
+
     }
 
     public void SetParent(GameObject parent)
@@ -140,4 +157,15 @@ public class PieceController : MonoBehaviour
         return _hasStoppedMoving;
     }
 
+    public void DropPiece()
+    {
+        Debug.Log("Piece is dropped.");
+        SetDynamic();
+        _gameBoardController.SetIsWaitingForPieceToLand(true);
+    }
+
+    public void SetGameBoardController(GameBoardController gameBoardController)
+    {
+        _gameBoardController = gameBoardController;
+    }
 }

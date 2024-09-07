@@ -37,22 +37,31 @@ public class CellController : MonoBehaviour, IPointerDownHandler
     {
         // Debug.Log("_gameBoardController == null is " + (_gameBoardController == null));
 
-        if (_gameBoardController.GetIsTakingOver() && _piece.GetBelongsTo() != _gameBoardController.GetNextPlayerTurn())
+        if (_gameBoardController.GetIsTakingOver() && _piece.GetBelongsTo() != _gameBoardController.GetNextPlayerTurn() && _piece)
         {
-            // Debug.Log("GameBoard line isn't issue");
+            _gameBoardController.SetPieceOwnerAndColor(_piece);
+            _gameBoardController.SetIsTakingOver(false);
+            _gameBoardController.CheckIfGameWon();
+            _gameBoardController.SwitchTurns();
+            _gameBoardController.CreatePieceInColumnWhichHoveringOver();
+
+        }
+        else if (_gameBoardController.GetIsEliminatingPiece())
+        {
+            // Debug.Log("Cell detected press and in eliminating key state");
             if (_piece != null)
             {
-                _gameBoardController.SetPieceOwnerAndColor(_piece);
-                _gameBoardController.SetIsTakingOver(false);
-                _gameBoardController.CheckIfGameWon();
-                _gameBoardController.SwitchTurns();
-                _columnController.CreatePieceIfHovering();
+                // Debug.Log("Destroy Piece");
+                Destroy(_piece.gameObject);
+                _piece = null;
+                _columnController.DropPiecesAboveEmptySpot();
+                _gameBoardController.SetIsEliminatingPiece(false);
 
             }
         }
         else
         {
-            _columnController.DropPieceIfExists();
+            _columnController.DropHoveringPiece();
         }
 
     }

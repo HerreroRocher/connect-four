@@ -17,15 +17,15 @@ public class GameBoardController : MonoBehaviour
     public GameObject ColumnPrefab;
     public GameObject DoubleMoveButton;
     public GameObject TakeOverButton;
+    public GameObject EliminatePieceButton;
+
+
     private int _columns;
     private int _rows;
     private int _inARowRequirements;
     private Color[] _playerColors;
     private string[] _playerNames;
     private string[][] _specialPowers;
-
-
-
     private ColumnController[] _columnGrid;
     private int _nextPlayerTurn = 0;
     private bool _isGameOver = false;
@@ -33,6 +33,7 @@ public class GameBoardController : MonoBehaviour
     private PieceController _lastPiecePlaced;
     private bool _isDoubleMoveTurn = false;
     private bool _isTakingOver = false;
+    private bool _isEliminatingPiece = false;
 
 
     private void Start()
@@ -50,6 +51,7 @@ public class GameBoardController : MonoBehaviour
         _columnGrid = new ColumnController[_columns];
         InstantiateBoard();
         SetNextPlayerText();
+        ShadeButtons();
 
         // Debug.Log("Board created");
     }
@@ -58,6 +60,7 @@ public class GameBoardController : MonoBehaviour
     {
         return _nextPlayerTurn;
     }
+
     private void SetNextPlayerText()
     {
         NextPlayerText.text = "It's your turn,\n" + _playerNames[_nextPlayerTurn];
@@ -66,7 +69,7 @@ public class GameBoardController : MonoBehaviour
 
     public void HandleDoubleMoveButtonClick()
     {
-        if (!_isGameOver && !_isWaitingForPieceToLand && _specialPowers[_nextPlayerTurn].Contains("DoubleMove") && !_isTakingOver)
+        if (!_isGameOver && !_isWaitingForPieceToLand && _specialPowers[_nextPlayerTurn].Contains("DoubleMove") && !_isTakingOver && !_isEliminatingPiece)
         {
 
             // Debug.Log("DoubleMoveButton clicked!");
@@ -80,7 +83,7 @@ public class GameBoardController : MonoBehaviour
 
     public void HandleTakeOverButtonClick()
     {
-        if (!_isGameOver && !_isWaitingForPieceToLand && _specialPowers[_nextPlayerTurn].Contains("TakeOver") && !_isDoubleMoveTurn)
+        if (!_isGameOver && !_isWaitingForPieceToLand && _specialPowers[_nextPlayerTurn].Contains("TakeOver") && !_isDoubleMoveTurn && !_isEliminatingPiece)
         {
 
             // Debug.Log("DoubleMoveButton clicked!");
@@ -92,10 +95,24 @@ public class GameBoardController : MonoBehaviour
         }
     }
 
+    public void HandleEliminatePieceButtonClick()
+    {
+        if (!_isGameOver && !_isWaitingForPieceToLand && _specialPowers[_nextPlayerTurn].Contains("EliminatePiece") && !_isDoubleMoveTurn && !_isTakingOver)
+        {
+
+            // Debug.Log("DoubleMoveButton clicked!");
+            SelectButton(EliminatePieceButton, true);
+            _isEliminatingPiece = true;
+            List<string> powersList = new List<string>(_specialPowers[_nextPlayerTurn]);
+            powersList.Remove("EliminatePiece");
+            _specialPowers[_nextPlayerTurn] = powersList.ToArray();
+        }
+    }
+
     public void ShadeButton(GameObject button, string powerText)
     {
 
-        if (_specialPowers[_nextPlayerTurn].Contains(powerText))
+        if (_specialPowers[_nextPlayerTurn].Contains(powerText) || _isGameOver)
         {
             button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1);
 
@@ -120,6 +137,16 @@ public class GameBoardController : MonoBehaviour
 
             button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1);
         }
+    }
+
+    public bool GetIsEliminatingPiece()
+    {
+        return _isEliminatingPiece;
+    }
+
+    public void SetIsEliminatingPiece(bool isEliminatingPiece)
+    {
+        _isEliminatingPiece = isEliminatingPiece;
     }
 
     public bool GetIsTakingOver()
@@ -151,13 +178,13 @@ public class GameBoardController : MonoBehaviour
     {
         for (int col = 0; col < _columns; col++)
         {
-            _columnGrid[col].CreatePieceIfHovering();
+            _columnGrid[col].CreateHoveringPiece();
         }
     }
 
     private void InstantiateBoard()
     {
-        float cellWidth = 800f / _rows;
+        float cellWidth = 700f / _rows;
         GetComponent<GridLayoutGroup>().cellSize = new Vector2(cellWidth, 0);
         InstantiateBaseRow(cellWidth);
         InstantiateColumns(cellWidth);
@@ -230,14 +257,19 @@ public class GameBoardController : MonoBehaviour
         else
         {
             _nextPlayerTurn = 1 - _nextPlayerTurn;
-            ShadeButton(DoubleMoveButton, "DoubleMove");
-            ShadeButton(TakeOverButton, "TakeOver");
+            ShadeButtons();
         }
         if (!_isGameOver)
         {
-
             SetNextPlayerText();
         }
+    }
+
+    private void ShadeButtons()
+    {
+        ShadeButton(DoubleMoveButton, "DoubleMove");
+        ShadeButton(TakeOverButton, "TakeOver");
+        ShadeButton(EliminatePieceButton, "EliminatePiece");
     }
 
     private bool CheckWinner(int playerNo)

@@ -12,7 +12,7 @@ public class ColumnController : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
 
     private CellController[] _cellGrid;
-    private PieceController _unplacedPiece;
+    private PieceController _hoveringPiece;
     private int _bottomCellIndex = 0;
     private GameBoardController _gameBoardController;
     private bool _isHovering = false;
@@ -38,16 +38,19 @@ public class ColumnController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         _gameBoardController = gameBoardController;
     }
 
-    public void DropPieceIfExists()
+    public void DropHoveringPiece()
     {
         // Debug.Log("Cell clicked");
         // Debug.Log("Clicked on cell in column " + column);
-        if (_unplacedPiece != null && !_gameBoardController.GetIsGameOver())
+        if (_hoveringPiece && !_gameBoardController.GetIsGameOver())
         {
-            // Debug.Log("Piece is dropped.");
-            _unplacedPiece.SetParent(_cellGrid[_bottomCellIndex].gameObject);
-            _unplacedPiece.SetDynamic();
-            _gameBoardController.SetIsWaitingForPieceToLand(true);
+            _hoveringPiece.DropPiece();
+            _hoveringPiece.SetParent(GetBottomCell().gameObject);
+            _hoveringPiece = null;
+            _bottomCellIndex += 1;
+
+
+
         }
 
     }
@@ -55,19 +58,7 @@ public class ColumnController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     public void OnPointerEnter(PointerEventData eventData)
     {
         _isHovering = true;
-        CreatePieceIfHovering();
-    }
-
-    public void CreatePiece()
-    {
-        // Debug.Log("isWaitingForPieceToLand " + isWaitingForPieceToLand);
-        if (!_gameBoardController.GetIsWaitingForPieceToLand() && !_gameBoardController.GetIsGameOver())
-        {
-            _unplacedPiece = Instantiate(PiecePrefab, transform.position + new Vector3(0, 5, 0), Quaternion.identity, transform).GetComponent<PieceController>();
-            _unplacedPiece.SetPieceSize(_pieceWidth);
-            _unplacedPiece.SetColumnController(this);
-            _gameBoardController.SetPieceOwnerAndColor(_unplacedPiece);
-        }
+        CreateHoveringPiece();
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -80,31 +71,19 @@ public class ColumnController : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     private void DestroyPiece()
     {
-        if (_unplacedPiece != null && !_gameBoardController.GetIsWaitingForPieceToLand())
+        if (_hoveringPiece && !_gameBoardController.GetIsWaitingForPieceToLand())
         {
-            Destroy(_unplacedPiece.gameObject);
-            _unplacedPiece = null;
+            Destroy(_hoveringPiece.gameObject);
+            _hoveringPiece = null;
         }
     }
 
     public void SetGameOver()
     {
-        if (_unplacedPiece)
+        if (_hoveringPiece)
         {
             DestroyPiece();
         }
-    }
-
-    public void AcknowledgePieceHasStopped()
-    {
-        _cellGrid[_bottomCellIndex].SetPiece(_unplacedPiece);
-        _unplacedPiece = null;
-        _bottomCellIndex += 1;
-        _gameBoardController.SetIsWaitingForPieceToLand(false);
-        _gameBoardController.CheckIfGameWon();
-        _gameBoardController.SwitchTurns();
-        _gameBoardController.CreatePieceInColumnWhichHoveringOver();
-
     }
 
     public CellController GetCellAtRow(int row)
@@ -112,12 +91,54 @@ public class ColumnController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         return _cellGrid[row];
     }
 
-    public void CreatePieceIfHovering()
+    public void CreateHoveringPiece()
     {
-        if (_isHovering && _bottomCellIndex < _cellGrid.Length && !_gameBoardController.GetIsTakingOver())
+        if (_isHovering && _bottomCellIndex < _cellGrid.Length && !_gameBoardController.GetIsTakingOver() && !_gameBoardController.GetIsEliminatingPiece())
         {
-            CreatePiece();
+            // Debug.Log("isWaitingForPieceToLand " + isWaitingForPieceToLand);
+            if (!_gameBoardController.GetIsWaitingForPieceToLand() && !_gameBoardController.GetIsGameOver())
+            {
+                _hoveringPiece = Instantiate(PiecePrefab, transform.position + new Vector3(0, 5, 0), Quaternion.identity, transform).GetComponent<PieceController>();
+                _hoveringPiece.SetPieceSize(_pieceWidth);
+                _hoveringPiece.SetColumnController(this);
+                _hoveringPiece.SetGameBoardController(_gameBoardController);
+                _gameBoardController.SetPieceOwnerAndColor(_hoveringPiece);
+            }
         }
     }
 
+    public CellController GetBottomCell()
+    {
+        return _cellGrid[_bottomCellIndex];
+    }
+
+    public void DropPiecesAboveEmptySpot()
+    {
+        bool emptyCellFound = false;
+        for (int rowNo = 0; rowNo < _cellGrid.Length; rowNo++)
+        {
+            if (emptyCellFound && _cellGrid[rowNo].GetPiece())
+            {
+                PieceController pieceToDrop = _cellGrid[rowNo].GetPiece();
+                pieceToDrop.SetParent(_cellGrid[rowNo - 1].gameObject);
+                Debug.Log("Parent coordinates: " + _cellGrid[rowNo - 1].gameObject.transform.position);
+                pieceToDrop.DropPiece();
+
+                if (_cellGrid[rowNo + 1].GetPiece() && rowNo != _cellGrid.Length - 1)
+                {
+                    pieceToDrop.SetSwitchTurnOnLanding(false);
+                } else {
+                    _bottomCellIndex = rowNo;
+                }
+
+            }
+            else
+            {
+                if (!_cellGrid[rowNo].GetPiece())
+                {
+                    emptyCellFound = true;
+                }
+            }
+        }
+    }
 }
