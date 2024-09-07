@@ -5,11 +5,6 @@ using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
-    private string[] players;
-    private Color[] colors;
-    private int rows;
-    private int columns;
-    private int inARowRequirements;
     public TMP_InputField Player1NameInputField;
     public TMP_InputField Player2NameInputField;
     public TMP_InputField RowsRequirementInputField;
@@ -18,8 +13,13 @@ public class MainMenuController : MonoBehaviour
     public FlexibleColorPicker Player1ColorPicker;
     public FlexibleColorPicker Player2ColorPicker;
 
+    
+    private string[] players;
+    private Color[] colors;
+    private int rows;
+    private int columns;
+    private int inARowRequirements;
 
-    // This method is called when the button is clicked
     public void OnPlayButtonClicked()
     {
         players = new string[] { (Player1NameInputField.text != "" ? Player1NameInputField.text : "Daniel"), (Player2NameInputField.text != "" ? Player2NameInputField.text : "Natasja") };

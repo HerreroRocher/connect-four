@@ -107,7 +107,6 @@ public class ColumnController : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     }
 
-
     public CellController GetCellAtRow(int row)
     {
         return _cellGrid[row];

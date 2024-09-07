@@ -37,7 +37,7 @@ public class CellController : MonoBehaviour, IPointerDownHandler
     {
         // Debug.Log("_gameBoardController == null is " + (_gameBoardController == null));
 
-        if (_gameBoardController.GetIsTakingOver())
+        if (_gameBoardController.GetIsTakingOver() && _piece.GetBelongsTo() != _gameBoardController.GetNextPlayerTurn())
         {
             // Debug.Log("GameBoard line isn't issue");
             if (_piece != null)

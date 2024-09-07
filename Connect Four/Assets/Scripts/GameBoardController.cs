@@ -54,6 +54,10 @@ public class GameBoardController : MonoBehaviour
         // Debug.Log("Board created");
     }
 
+    public int GetNextPlayerTurn()
+    {
+        return _nextPlayerTurn;
+    }
     private void SetNextPlayerText()
     {
         NextPlayerText.text = "It's your turn,\n" + _playerNames[_nextPlayerTurn];
@@ -73,7 +77,6 @@ public class GameBoardController : MonoBehaviour
             _specialPowers[_nextPlayerTurn] = powersList.ToArray();
         }
     }
-
 
     public void HandleTakeOverButtonClick()
     {
@@ -118,7 +121,6 @@ public class GameBoardController : MonoBehaviour
             button.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1);
         }
     }
-
 
     public bool GetIsTakingOver()
     {
@@ -237,6 +239,7 @@ public class GameBoardController : MonoBehaviour
             SetNextPlayerText();
         }
     }
+
     private bool CheckWinner(int playerNo)
     {
 

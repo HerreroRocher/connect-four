@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class PieceController : MonoBehaviour
 {
 
-    private GameObject BackgroundAndPiecesCanvas;
+    private GameObject _backgroundAndPiecesCanvas;
     private Rigidbody2D _rigidbody;
     private bool _hasStoppedMoving;
     private GameObject _parent;
@@ -18,7 +18,7 @@ public class PieceController : MonoBehaviour
     private bool _isCanvasSwitched = false;
     private int _belongsTo;
     private ColumnController _columnController;
-    private Vector2 size;
+    private Vector2 _size;
 
 
     public void SetColumnController(ColumnController columnController)
@@ -37,23 +37,23 @@ public class PieceController : MonoBehaviour
         {
             // Debug.Log("Rigidbody initialised");
         }
-        BackgroundAndPiecesCanvas = GameObject.FindGameObjectWithTag("Background and Pieces Canvas");
+        _backgroundAndPiecesCanvas = GameObject.FindGameObjectWithTag("Background and Pieces Canvas");
 
         _startPosition = transform.position;
     }
 
     public void SetPieceSize(float pieceWidth){
-        size = new Vector2(pieceWidth, pieceWidth);
-        GetComponent<RectTransform>().sizeDelta = size;
+        _size = new Vector2(pieceWidth, pieceWidth);
+        GetComponent<RectTransform>().sizeDelta = _size;
     }
 
     private void switchCanvas()
     {
 
-        if (BackgroundAndPiecesCanvas != null)
+        if (_backgroundAndPiecesCanvas != null)
         {
-            this.transform.SetParent(BackgroundAndPiecesCanvas.transform, false);
-            gameObject.GetComponent<RectTransform>().sizeDelta = size;
+            this.transform.SetParent(_backgroundAndPiecesCanvas.transform, false);
+            gameObject.GetComponent<RectTransform>().sizeDelta = _size;
 
 
         }
