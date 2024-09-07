@@ -350,7 +350,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 689329945}
         m_TargetAssemblyTypeName: GameBoardController, Assembly-CSharp
-        m_MethodName: HandleTakeOverEnemyPieceButtonClick
+        m_MethodName: HandleTakeOverButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -932,6 +932,8 @@ MonoBehaviour:
   LeftBaseCellPrefab: {fileID: 2561981694405490021, guid: 9740290c912407849861e2ee66aedfca, type: 3}
   RightBaseCellPrefab: {fileID: 7801368913144840723, guid: cdcf37a594a07cb49a0dec740953f76a, type: 3}
   ColumnPrefab: {fileID: 8237143448087638575, guid: 7d292303bb13a39429855244dfea4330, type: 3}
+  DoubleMoveButton: {fileID: 923634283}
+  TakeOverButton: {fileID: 401714122}
 --- !u!1 &742583419
 GameObject:
   m_ObjectHideFlags: 0

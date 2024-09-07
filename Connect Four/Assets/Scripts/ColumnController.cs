@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
+public class ColumnController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public GameObject CellPrefab;
     public GameObject PiecePrefab;
@@ -28,6 +28,8 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         for (int cellRowNo = 0; cellRowNo < rows; cellRowNo++)
         {
             _cellGrid[cellRowNo] = Instantiate(CellPrefab, transform).GetComponent<CellController>();
+            _cellGrid[cellRowNo].SetGameBoardController(_gameBoardController);
+            _cellGrid[cellRowNo].SetColumnController(this);
         }
     }
 
@@ -36,12 +38,13 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         _gameBoardController = gameBoardController;
     }
 
-    public void OnPointerDown(PointerEventData pointer)
+    public void DropPieceIfExists()
     {
         // Debug.Log("Cell clicked");
         // Debug.Log("Clicked on cell in column " + column);
         if (_unplacedPiece != null && !_gameBoardController.GetIsGameOver())
         {
+            // Debug.Log("Piece is dropped.");
             _unplacedPiece.SetParent(_cellGrid[_bottomCellIndex].gameObject);
             _unplacedPiece.SetDynamic();
             _gameBoardController.SetIsWaitingForPieceToLand(true);
@@ -52,10 +55,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
     public void OnPointerEnter(PointerEventData eventData)
     {
         _isHovering = true;
-        if (_bottomCellIndex < _cellGrid.Length)
-        {
-            CreatePiece();
-        }
+        CreatePieceIfHovering();
     }
 
     public void CreatePiece()
@@ -102,6 +102,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
         _bottomCellIndex += 1;
         _gameBoardController.SetIsWaitingForPieceToLand(false);
         _gameBoardController.CheckIfGameWon();
+        _gameBoardController.SwitchTurns();
         _gameBoardController.CreatePieceInColumnWhichHoveringOver();
 
     }
@@ -114,7 +115,7 @@ public class ColumnController : MonoBehaviour, IPointerDownHandler, IPointerEnte
 
     public void CreatePieceIfHovering()
     {
-        if (_isHovering && _bottomCellIndex < _cellGrid.Length)
+        if (_isHovering && _bottomCellIndex < _cellGrid.Length && !_gameBoardController.GetIsTakingOver())
         {
             CreatePiece();
         }
