@@ -1,11 +1,6 @@
 Improvements:
-Physics for dropping (adding it actually dropping, and little bounce)
-Add piece at the top and highlight column
-Add special powers
-Add undo sp
 Add erase piece sp
 Add play vs ai
 Find out how to debug w breakpoints
 Find out remote 2-player play
-Find out how to build
 on win flash instead of change to green to pieces
