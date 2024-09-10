@@ -242,18 +242,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e04464fa689cbf4482d02a78021f101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  players: []
-  colors: []
-  rows: 0
-  columns: 0
-  inARowRequirements: 0
-  player1NameIF: {fileID: 176443431}
-  player2NameIF: {fileID: 302629567}
-  rowsReq: {fileID: 0}
-  columnsReq: {fileID: 0}
-  connectReq: {fileID: 0}
-  colorPickerPlayer1: {fileID: 1967978288}
-  colorPickerPlayer2: {fileID: 1352453203}
+  Player1NameInputField: {fileID: 176443431}
+  Player2NameInputField: {fileID: 302629567}
+  RowsRequirementInputField: {fileID: 0}
+  ColumnsRequirementInputField: {fileID: 0}
+  InARowRequirementInputField: {fileID: 0}
+  Player1ColorPicker: {fileID: 1967978288}
+  Player2ColorPicker: {fileID: 1352453203}
 --- !u!1 &81579920
 GameObject:
   m_ObjectHideFlags: 0
